@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özyürek Şekerleme - Yönetici Paneli</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Admin panel özel stilleri -->
+    <style>
+        :root {
+            --primary-color: #e84c88; /* Pembe tonu */
+            --secondary-color: #7baa6d; /* Yeşil tonu */
+            --light-color: #f8f4e8; /* Krem tonu */
+            --dark-color: #3a3a3a;
+            --white-color: #ffffff;
+        }
+        
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--light-color);
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background-color: var(--white-color);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            max-width: 80%;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--white-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .admin-nav a i {
+            margin-right: 10px;
+        }
+        
+        .dashboard-card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background-color: var(--white-color);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card.orders {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .stat-card.revenue {
+            border-left-color: #ffd166;
+        }
+        
+        .stat-card.users {
+            border-left-color: #06d6a0;
+        }
+        
+        .stat-card h3 {
+            margin-top: 0;
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+        
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-card .stat-compare {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .recent-orders {
+            margin-top: 30px;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .admin-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-shipped {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-delivered {
+            background-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .admin-user-menu {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .admin-user-menu .user-info {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .admin-user-menu .user-info img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .language-selector {
+            margin-right: 20px;
+        }
+        
+        .language-selector select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../assets/images/logo/logo-white.png" alt="Özyürek Şekerleme Logo">
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-tachometer-alt"></i> <span data-i18n="admin.dashboard">Panel</span></a></li>
+                    <li><a href="products.html"><i class="fas fa-box"></i> <span data-i18n="admin.products">Ürünler</span></a></li>
+                    <li><a href="categories.html"><i class="fas fa-tags"></i> <span data-i18n="admin.categories">Kategoriler</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span data-i18n="admin.orders">Siparişler</span></a></li>
+                    <li><a href="discounts.html"><i class="fas fa-percent"></i> <span data-i18n="admin.discounts">İndirimler</span></a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> <span data-i18n="admin.notifications">Bildirimler</span></a></li>
+                    <li><a href="translations.html"><i class="fas fa-language"></i> <span data-i18n="admin.translations">Çeviriler</span></a></li>
+                    <li><a href="../index.html" target="_blank"><i class="fas fa-globe"></i> <span data-i18n="admin.visit_site">Siteyi Görüntüle</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-content">
+            <header class="admin-header">
+                <h1 data-i18n="admin.dashboard_title">Yönetici Paneli</h1>
+                <div class="admin-header-right" style="display: flex; align-items: center;">
+                    <div class="language-selector">
+                        <select id="admin-language-selector">
+                            <option value="tr" selected>Türkçe</option>
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                        </select>
+                    </div>
+                    <div class="admin-user-menu">
+                        <div class="user-info">
+                            <img src="../assets/images/icons/admin-avatar.jpg" alt="Admin">
+                            <span>Admin <i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-overview">
+                <h2 data-i18n="admin.overview">Genel Bakış</h2>
+                <div class="stats-grid">
+                    <div class="stat-card products">
+                        <h3 data-i18n="admin.total_products">Toplam Ürün</h3>
+                        <div class="stat-value">48</div>
+                        <div class="stat-compare"><i class="fas fa-arrow-up"></i> 5% <span data-i18n="admin.last_month">geçen aya göre</span></div>
+                    </div>
+                    <div class="stat-card orders">
+                        <h3 data-i18n="admin.total_orders">Toplam Sipariş</h3>
+                        <div class="stat-value">156</div>
+                        <div class="stat-compare"><i class="fas fa-arrow-up"></i> 12% <span data-i18n="admin.last_month">geçen aya göre</span></div>
+                    </div>
+                    <div class="stat-card revenue">
+                        <h3 data-i18n="admin.total_revenue">Toplam Gelir</h3>
+                        <div class="stat-value">₺24,850</div>
+                        <div class="stat-compare"><i class="fas fa-arrow-up"></i> 8% <span data-i18n="admin.last_month">geçen aya göre</span></div>
+                    </div>
+                    <div class="stat-card users">
+                        <h3 data-i18n="admin.total_users">Toplam Kullanıcı</h3>
+                        <div class="stat-value">245</div>
+                        <div class="stat-compare"><i class="fas fa-arrow-up"></i> 15% <span data-i18n="admin.last_month">geçen aya göre</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-orders">
+                <div class="dashboard-card">
+                    <h2 data-i18n="admin.recent_orders">Son Siparişler</h2>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="admin.order_id">Sipariş No</th>
+                                <th data-i18n="admin.customer">Müşteri</th>
+                                <th data-i18n="admin.date">Tarih</th>
+                                <th data-i18n="admin.amount">Tutar</th>
+                                <th data-i18n="admin.status">Durum</th>
+                                <th data-i18n="admin.actions">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-5862</td>
+                                <td>Ahmet Yılmaz</td>
+                                <td>12.03.2023</td>
+                                <td>₺245.00</td>
+                                <td><span class="status-badge status-processing" data-i18n="admin.processing">Hazırlanıyor</span></td>
+                                <td>
+                                    <a href="orders.html?id=5862" class="action-btn" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5861</td>
+                                <td>Mehmet Demir</td>
+                                <td>12.03.2023</td>
+                                <td>₺580.00</td>
+                                <td><span class="status-badge status-pending" data-i18n="admin.pending">Onay Bekliyor</span></td>
+                                <td>
+                                    <a href="orders.html?id=5861" class="action-btn" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5860</td>
+                                <td>Ayşe Kaya</td>
+                                <td>11.03.2023</td>
+                                <td>₺350.00</td>
+                                <td><span class="status-badge status-shipped" data-i18n="admin.shipped">Kargoya Verildi</span></td>
+                                <td>
+                                    <a href="orders.html?id=5860" class="action-btn" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5859</td>
+                                <td>Mustafa Aydın</td>
+                                <td>10.03.2023</td>
+                                <td>₺420.00</td>
+                                <td><span class="status-badge status-delivered" data-i18n="admin.delivered">Teslim Edildi</span></td>
+                                <td>
+                                    <a href="orders.html?id=5859" class="action-btn" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5858</td>
+                                <td>Zeynep Koç</td>
+                                <td>10.03.2023</td>
+                                <td>₺185.00</td>
+                                <td><span class="status-badge status-delivered" data-i18n="admin.delivered">Teslim Edildi</span></td>
+                                <td>
+                                    <a href="orders.html?id=5858" class="action-btn" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align: right; margin-top: 15px;">
+                        <a href="orders.html" class="btn btn-primary" data-i18n="admin.view_all_orders">Tüm Siparişleri Görüntüle</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="dashboard-card">
+                    <h2 data-i18n="admin.quick_actions">Hızlı İşlemler</h2>
+                    <div class="action-buttons" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="products.html?action=add" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="admin.add_product">Ürün Ekle</span></a>
+                        <a href="categories.html?action=add" class="btn btn-secondary"><i class="fas fa-plus"></i> <span data-i18n="admin.add_category">Kategori Ekle</span></a>
+                        <a href="discounts.html?action=add" class="btn btn-success"><i class="fas fa-plus"></i> <span data-i18n="admin.add_discount">İndirim Ekle</span></a>
+                        <a href="notifications.html?action=send" class="btn btn-info"><i class="fas fa-paper-plane"></i> <span data-i18n="admin.send_notification">Bildirim Gönder</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/i18n.js"></script>
+    <script src="../assets/js/admin/admin.js"></script>
+    <script>
+        // Admin panel login kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage'dan admin bilgilerini kontrol et
+            const adminEmail = localStorage.getItem('adminEmail');
+            if (!adminEmail || adminEmail !== 'aytaccsu1@gmail.com') {
+                window.location.href = '../login.html?redirect=admin';
+            }
+            
+            // Dil değiştirici
+            const languageSelector = document.getElementById('admin-language-selector');
+            languageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+            
+            // Dil dosyalarını yükle
+            const currentLang = localStorage.getItem('language') || 'tr';
+            languageSelector.value = currentLang;
+            loadLanguage(currentLang);
+        });
+        
+        // Dil değiştirme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            loadLanguage(lang);
+        }
+        
+        // Dil yükleme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function loadLanguage(lang) {
+            fetch(`../locales/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // RTL desteği
+                    if (lang === 'ar') {
+                        document.documentElement.dir = 'rtl';
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.documentElement.dir = 'ltr';
+                        document.body.classList.remove('rtl');
+                    }
+                })
+                .catch(error => console.error('Dil dosyası yüklenemedi:', error));
+        }
+    </script>
+</body>
+</html>

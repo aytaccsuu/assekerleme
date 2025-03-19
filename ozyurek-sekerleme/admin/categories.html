@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori Yönetimi - Özyürek Şekerleme</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Admin panel özel stilleri -->
+    <style>
+        :root {
+            --primary-color: #e84c88; /* Pembe tonu */
+            --secondary-color: #7baa6d; /* Yeşil tonu */
+            --light-color: #f8f4e8; /* Krem tonu */
+            --dark-color: #3a3a3a;
+            --white-color: #ffffff;
+        }
+        
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--light-color);
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background-color: var(--white-color);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            max-width: 80%;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--white-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .admin-nav a i {
+            margin-right: 10px;
+        }
+        
+        .dashboard-card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .admin-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .admin-category-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.edit {
+            background-color: var(--secondary-color);
+        }
+        
+        .action-btn.delete {
+            background-color: #e74c3c;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 300px;
+            width: 100%;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .search-box button {
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d43d79;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            margin: 0 5px;
+            border-radius: 4px;
+            text-decoration: none;
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a.active, .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .image-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .language-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .language-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .language-tab.active {
+            background-color: #f9f9f9;
+            border-color: #e0e0e0;
+        }
+        
+        .language-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+        }
+        
+        .language-content.active {
+            display: block;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .language-selector {
+            margin-right: 20px;
+        }
+        
+        .language-selector select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .status-active {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .category-card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .category-info {
+            padding: 15px;
+        }
+        
+        .category-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .category-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .view-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .view-mode-btn {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .view-mode-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../assets/images/logo/logo-white.png" alt="Özyürek Şekerleme Logo">
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span data-i18n="admin.dashboard">Panel</span></a></li>
+                    <li><a href="products.html"><i class="fas fa-box"></i> <span data-i18n="admin.products">Ürünler</span></a></li>
+                    <li><a href="categories.html" class="active"><i class="fas fa-tags"></i> <span data-i18n="admin.categories">Kategoriler</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span data-i18n="admin.orders">Siparişler</span></a></li>
+                    <li><a href="discounts.html"><i class="fas fa-percent"></i> <span data-i18n="admin.discounts">İndirimler</span></a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> <span data-i18n="admin.notifications">Bildirimler</span></a></li>
+                    <li><a href="translations.html"><i class="fas fa-language"></i> <span data-i18n="admin.translations">Çeviriler</span></a></li>
+                    <li><a href="../index.html" target="_blank"><i class="fas fa-globe"></i> <span data-i18n="admin.visit_site">Siteyi Görüntüle</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-content">
+            <header class="admin-header">
+                <h1 data-i18n="admin.category_management">Kategori Yönetimi</h1>
+                <div class="admin-header-right" style="display: flex; align-items: center;">
+                    <div class="language-selector">
+                        <select id="admin-language-selector">
+                            <option value="tr" selected>Türkçe</option>
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                        </select>
+                    </div>
+                    <div class="admin-user-menu">
+                        <div class="user-info">
+                            <img src="../assets/images/icons/admin-avatar.jpg" alt="Admin">
+                            <span>Admin <i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="categories-management">
+                <div class="dashboard-card">
+                    <div class="filter-bar">
+                        <div class="left-side">
+                            <a href="#" id="add-category-btn" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="admin.add_category">Kategori Ekle</span></a>
+                        </div>
+                        
+                        <div class="right-side" style="display: flex; gap: 15px; align-items: center;">
+                            <div class="search-box">
+                                <input type="text" id="search-category" placeholder="Kategori Ara...">
+                                <button><i class="fas fa-search"></i></button>
+                            </div>
+                            
+                            <div class="view-mode-toggle">
+                                <button class="view-mode-btn" data-view="grid" title="Grid Görünüm"><i class="fas fa-th-large"></i></button>
+                                <button class="view-mode-btn active" data-view="list" title="Liste Görünüm"><i class="fas fa-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Liste Görünüm -->
+                    <div id="list-view">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">#</th>
+                                    <th style="width: 80px;" data-i18n="admin.image">Resim</th>
+                                    <th data-i18n="admin.category_name">Kategori Adı</th>
+                                    <th data-i18n="admin.parent_category">Üst Kategori</th>
+                                    <th data-i18n="admin.product_count">Ürün Sayısı</th>
+                                    <th data-i18n="admin.status">Durum</th>
+                                    <th style="width: 100px;" data-i18n="admin.actions">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><img src="../assets/images/categories/lokum.jpg" alt="Lokum Çeşitleri" class="admin-category-image"></td>
+                                    <td>Lokum Çeşitleri</td>
+                                    <td>-</td>
+                                    <td>18</td>
+                                    <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(1)"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(1)"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><img src="../assets/images/categories/seker.jpg" alt="Şekerlemeler" class="admin-category-image"></td>
+                                    <td>Şekerlemeler</td>
+                                    <td>-</td>
+                                    <td>12</td>
+                                    <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(2)"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(2)"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><img src="../assets/images/categories/koleksiyon.jpg" alt="Özel Koleksiyonlar" class="admin-category-image"></td>
+                                    <td>Özel Koleksiyonlar</td>
+                                    <td>-</td>
+                                    <td>10</td>
+                                    <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(3)"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(3)"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td><img src="../assets/images/categories/hediye.jpg" alt="Hediyelik Setler" class="admin-category-image"></td>
+                                    <td>Hediyelik Setler</td>
+                                    <td>-</td>
+                                    <td>8</td>
+                                    <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(4)"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(4)"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td><img src="../assets/images/categories/findik.jpg" alt="Fındıklı Lokumlar" class="admin-category-image"></td>
+                                    <td>Fındıklı Lokumlar</td>
+                                    <td>Lokum Çeşitleri</td>
+                                    <td>6</td>
+                                    <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(5)"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(5)"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Grid Görünüm -->
+                    <div id="grid-view" style="display: none;">
+                        <div class="category-grid">
+                            <div class="category-card">
+                                <img src="../assets/images/categories/lokum.jpg" alt="Lokum Çeşitleri" class="category-image">
+                                <div class="category-info">
+                                    <h3>Lokum Çeşitleri</h3>
+                                    <p><strong data-i18n="admin.parent_category">Üst Kategori</strong>: -</p>
+                                    <p><strong data-i18n="admin.product_count">Ürün Sayısı</strong>: 18</p>
+                                    <p><strong data-i18n="admin.status">Durum</strong>: <span class="status-active" data-i18n="admin.active">Aktif</span></p>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(1)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(1)"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card">
+                                <img src="../assets/images/categories/seker.jpg" alt="Şekerlemeler" class="category-image">
+                                <div class="category-info">
+                                    <h3>Şekerlemeler</h3>
+                                    <p><strong data-i18n="admin.parent_category">Üst Kategori</strong>: -</p>
+                                    <p><strong data-i18n="admin.product_count">Ürün Sayısı</strong>: 12</p>
+                                    <p><strong data-i18n="admin.status">Durum</strong>: <span class="status-active" data-i18n="admin.active">Aktif</span></p>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(2)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(2)"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card">
+                                <img src="../assets/images/categories/koleksiyon.jpg" alt="Özel Koleksiyonlar" class="category-image">
+                                <div class="category-info">
+                                    <h3>Özel Koleksiyonlar</h3>
+                                    <p><strong data-i18n="admin.parent_category">Üst Kategori</strong>: -</p>
+                                    <p><strong data-i18n="admin.product_count">Ürün Sayısı</strong>: 10</p>
+                                    <p><strong data-i18n="admin.status">Durum</strong>: <span class="status-active" data-i18n="admin.active">Aktif</span></p>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(3)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(3)"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card">
+                                <img src="../assets/images/categories/hediye.jpg" alt="Hediyelik Setler" class="category-image">
+                                <div class="category-info">
+                                    <h3>Hediyelik Setler</h3>
+                                    <p><strong data-i18n="admin.parent_category">Üst Kategori</strong>: -</p>
+                                    <p><strong data-i18n="admin.product_count">Ürün Sayısı</strong>: 8</p>
+                                    <p><strong data-i18n="admin.status">Durum</strong>: <span class="status-active" data-i18n="admin.active">Aktif</span></p>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(4)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(4)"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="category-card">
+                                <img src="../assets/images/categories/findik.jpg" alt="Fındıklı Lokumlar" class="category-image">
+                                <div class="category-info">
+                                    <h3>Fındıklı Lokumlar</h3>
+                                    <p><strong data-i18n="admin.parent_category">Üst Kategori</strong>: Lokum Çeşitleri</p>
+                                    <p><strong data-i18n="admin.product_count">Ürün Sayısı</strong>: 6</p>
+                                    <p><strong data-i18n="admin.status">Durum</strong>: <span class="status-active" data-i18n="admin.active">Aktif</span></p>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editCategory(5)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteCategory(5)"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Category Add/Edit Modal -->
+    <div class="modal-overlay" id="category-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title" data-i18n="admin.add_category">Kategori Ekle</h2>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <form id="category-form">
+                <input type="hidden" id="category-id" value="">
+                
+                <div class="language-tabs">
+                    <div class="language-tab active" data-lang="tr">Türkçe</div>
+                    <div class="language-tab" data-lang="en">English</div>
+                    <div class="language-tab" data-lang="ar">العربية</div>
+                </div>
+                
+                <!-- Turkish Content -->
+                <div class="language-content active" data-lang="tr">
+                    <div class="form-group">
+                        <label for="category-name-tr">Kategori Adı</label>
+                        <input type="text" id="category-name-tr" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category-description-tr">Kategori Açıklaması</label>
+                        <textarea id="category-description-tr" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- English Content -->
+                <div class="language-content" data-lang="en">
+                    <div class="form-group">
+                        <label for="category-name-en">Category Name</label>
+                        <input type="text" id="category-name-en" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category-description-en">Category Description</label>
+                        <textarea id="category-description-en" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Arabic Content -->
+                <div class="language-content" data-lang="ar">
+                    <div class="form-group">
+                        <label for="category-name-ar">اسم الفئة</label>
+                        <input type="text" id="category-name-ar" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category-description-ar">وصف الفئة</label>
+                        <textarea id="category-description-ar" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Common Fields -->
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="parent-category">Üst Kategori</label>
+                            <select id="parent-category" class="form-control">
+                                <option value="">Ana Kategori</option>
+                                <option value="1">Lokum Çeşitleri</option>
+                                <option value="2">Şekerlemeler</option>
+                                <option value="3">Özel Koleksiyonlar</option>
+                                <option value="4">Hediyelik Setler</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="category-status">Durum</label>
+                            <select id="category-status" class="form-control">
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Pasif</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-image">Kategori Görseli</label>
+                    <input type="file" id="category-image" class="form-control" accept="image/*">
+                    <div class="image-preview" id="image-preview">
+                        <!-- Preview image will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-slug">SEO URL (Slug)</label>
+                    <input type="text" id="category-slug" class="form-control" placeholder="ornek-kategori">
+                    <small>Boş bırakıldığında kategori adından otomatik oluşturulur.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-meta-title">SEO Başlığı</label>
+                    <input type="text" id="category-meta-title" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-meta-description">SEO Açıklaması</label>
+                    <textarea id="category-meta-description" class="form-control"></textarea>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="cancel-category">İptal</button>
+                    <button type="submit" class="btn btn-primary" id="save-category">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="admin.confirm_delete">Silme Onayı</h2>
+                <button class="modal-close" id="close-delete-modal">&times;</button>
+            </div>
+            <p data-i18n="admin.delete_category_confirm">Bu kategoriyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            <div class="modal-footer">
+                <button type="button" class="btn" id="cancel-delete" data-i18n="admin.cancel">İptal</button>
+                <button type="button" class="btn btn-primary" id="confirm-delete" data-i18n="admin.delete">Sil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/i18n.js"></script>
+    <script src="../assets/js/admin/admin.js"></script>
+    <script src="../assets/js/admin/category-manager.js"></script>
+    <script>
+        // Admin panel login kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage'dan admin bilgilerini kontrol et
+            const adminEmail = localStorage.getItem('adminEmail');
+            if (!adminEmail || adminEmail !== 'aytaccsu1@gmail.com') {
+                window.location.href = '../login.html?redirect=admin';
+            }
+            
+            // Dil değiştirici
+            const languageSelector = document.getElementById('admin-language-selector');
+            languageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+            
+            // Dil dosyalarını yükle
+            const currentLang = localStorage.getItem('language') || 'tr';
+            languageSelector.value = currentLang;
+            loadLanguage(currentLang);
+            
+            // Dil sekmelerini kontrol et
+            const langTabs = document.querySelectorAll('.language-tab');
+            langTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    
+                    // Aktif sekme sınıfını değiştir
+                    document.querySelectorAll('.language-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili içeriği göster
+                    document.querySelectorAll('.language-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.querySelector(`.language-content[data-lang="${lang}"]`).classList.add('active');
+                });
+            });
+            
+            // Görünüm modunu değiştirme
+            const viewButtons = document.querySelectorAll('.view-mode-btn');
+            const listView = document.getElementById('list-view');
+            const gridView = document.getElementById('grid-view');
+            
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const viewMode = this.getAttribute('data-view');
+                    
+                    // Aktif buton sınıfını değiştir
+                    document.querySelectorAll('.view-mode-btn').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili görünümü göster
+                    if (viewMode === 'list') {
+                        listView.style.display = 'block';
+                        gridView.style.display = 'none';
+                    } else {
+                        listView.style.display = 'none';
+                        gridView.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Kategori ekleme modalını aç
+            const addCategoryBtn = document.getElementById('add-category-btn');
+            const categoryModal = document.getElementById('category-modal');
+            const closeModal = document.getElementById('close-modal');
+            const cancelCategory = document.getElementById('cancel-category');
+            
+            addCategoryBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                categoryModal.style.display = 'flex';
+                document.getElementById('modal-title').textContent = 'Kategori Ekle';
+                document.getElementById('category-id').value = '';
+                document.getElementById('category-form').reset();
+                document.getElementById('image-preview').innerHTML = '';
+            });
+            
+            closeModal.addEventListener('click', function() {
+                categoryModal.style.display = 'none';
+            });
+            
+            cancelCategory.addEventListener('click', function() {
+                categoryModal.style.display = 'none';
+            });
+            
+            // Kategori düzenleme modalı
+            window.editCategory = function(id) {
+                categoryModal.style.display = 'flex';
+                document.getElementById('modal-title').textContent = 'Kategori Düzenle';
+                document.getElementById('category-id').value = id;
+                
+                // Demo olarak kategori bilgilerini doldur
+                if (id === 1) {
+                    document.getElementById('category-name-tr').value = 'Lokum Çeşitleri';
+                    document.getElementById('category-name-en').value = 'Turkish Delight Varieties';
+                    document.getElementById('category-name-ar').value = 'أنواع راحة تركية';
+                    document.getElementById('category-description-tr').value = 'Geleneksel Türk lokumu çeşitleri';
+                    document.getElementById('category-description-en').value = 'Traditional Turkish delight varieties';
+                    document.getElementById('parent-category').value = '';
+                    document.getElementById('category-status').value = 'active';
+                    document.getElementById('category-slug').value = 'lokum-cesitleri';
+                    document.getElementById('category-meta-title').value = 'Özyürek Şekerleme - Lokum Çeşitleri';
+                    document.getElementById('category-meta-description').value = 'Geleneksel Türk lokumu çeşitleri, en kaliteli malzemelerle üretilmiş lezzetli lokumlar.';
+                    
+                    // Demo görsel
+                    const imgPreview = document.getElementById('image-preview');
+                    imgPreview.innerHTML = `<img src="../assets/images/categories/lokum.jpg" alt="Lokum Çeşitleri">`;
+                }
+            };
+            
+            // Kategori silme modalı
+            const deleteModal = document.getElementById('delete-modal');
+            const closeDeleteModal = document.getElementById('close-delete-modal');
+            const cancelDelete = document.getElementById('cancel-delete');
+            const confirmDelete = document.getElementById('confirm-delete');
+            
+            window.deleteCategory = function(id) {
+                deleteModal.style.display = 'flex';
+                
+                confirmDelete.onclick = function() {
+                    // Burada API isteği ile kategori silme işlemi yapılacak
+                    console.log(`Kategori #${id} silindi`);
+                    deleteModal.style.display = 'none';
+                    // Sayfayı yenilemek yerine tablodan satırı kaldırabilirsiniz
+                };
+            };
+            
+            closeDeleteModal.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            cancelDelete.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            // Kategori kaydetme işlemi
+            const categoryForm = document.getElementById('category-form');
+            categoryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Burada API isteği ile kategori ekleme/güncelleme işlemi yapılacak
+                console.log('Kategori kaydedildi');
+                categoryModal.style.display = 'none';
+                
+                // Gerçek bir uygulamada, form verilerini toplayıp API'ye göndermek için:
+                // const formData = new FormData(categoryForm);
+                // fetch('/api/categories', { method: 'POST', body: formData })
+                //    .then(response => response.json())
+                //    .then(data => console.log('Kategori kaydedildi:', data))
+                //    .catch(error => console.error('Hata:', error));
+            });
+            
+            // Kategori görseli önizleme
+            const categoryImageInput = document.getElementById('category-image');
+            const imagePreview = document.getElementById('image-preview');
+            
+            categoryImageInput.addEventListener('change', function() {
+                imagePreview.innerHTML = '';
+                
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        imagePreview.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+        
+        // Dil değiştirme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            loadLanguage(lang);
+        }
+        
+        // Dil yükleme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function loadLanguage(lang) {
+            fetch(`../locales/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // Placeholder değerlerini güncelle
+                    document.getElementById('search-category').placeholder = data.admin.search_category || 'Kategori Ara...';
+                    
+                    // RTL desteği
+                    if (lang === 'ar') {
+                        document.documentElement.dir = 'rtl';
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.documentElement.dir = 'ltr';
+                        document.body.classList.remove('rtl');
+                    }
+                })
+                .catch(error => console.error('Dil dosyası yüklenemedi:', error));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+ 
+{
+    "development": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "ozyurek_sekerleme_dev",
+      "user": "dev_user",
+      "password": "dev_password",
+      "connectionLimit": 10,
+      "charset": "utf8mb4",
+      "debug": true
+    },
+    "test": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "ozyurek_sekerleme_test",
+      "user": "test_user",
+      "password": "test_password",
+      "connectionLimit": 10,
+      "charset": "utf8mb4",
+      "debug": true
+    },
+    "production": {
+      "host": "production_db_host",
+      "port": 3306,
+      "database": "ozyurek_sekerleme_prod",
+      "user": "prod_user",
+      "password": "prod_password",
+      "connectionLimit": 20,
+      "charset": "utf8mb4",
+      "debug": false,
+      "ssl": {
+        "ca": "../certs/ca-certificate.crt"
+      }
+    },
+    "connectionOptions": {
+      "enableKeepAlive": true,
+      "keepAliveInitialDelay": 10000,
+      "timezone": "+03:00",
+      "connectTimeout": 10000,
+      "acquireTimeout": 10000,
+      "waitForConnections": true,
+      "queueLimit": 0,
+      "supportBigNumbers": true,
+      "bigNumberStrings": true,
+      "dateStrings": true
+    }
+  }

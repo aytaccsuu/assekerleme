@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özyürek Şekerleme - Geleneksel Türk Lokumu ve Şekerlemeler</title>
+    <meta name="description" content="Geleneksel yöntemlerle üretilen kaliteli Türk lokumu ve şekerlemeleri. Antep fıstıklı, fındıklı, güllü ve karışık lokum çeşitleri, özel hediyelik setler.">
+    <meta name="keywords" content="türk lokumu, şekerleme, antep fıstıklı lokum, güllü lokum, fındıklı lokum, hediyelik lokum, lokum siparişi">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- RTL CSS - Dile göre dinamik olarak yüklenecek -->
+    <link rel="stylesheet" href="assets/css/rtl.css" id="rtl-css" disabled>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <!-- Top Bar -->
+        <div class="header-top">
+            <div class="container">
+                <div class="d-flex justify-between align-center">
+                    <div class="header-contact">
+                        <span><i class="fas fa-phone"></i> <span data-i18n="contact.phone">+90 212 555 44 33</span></span>
+                        <span class="ml-3"><i class="fas fa-envelope"></i> <span data-i18n="contact.email">info@ozyureksekerleme.com</span></span>
+                    </div>
+                    <div class="header-actions">
+                        <div class="language-selector">
+                            <select id="language-selector">
+                                <option value="tr" selected>Türkçe</option>
+                                <option value="en">English</option>
+                                <option value="ar">العربية</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Navigation -->
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/images/logo/logo.png" alt="Özyürek Şekerleme Logo">
+                    </a>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
+                    <li><a href="products.html" data-i18n="nav.products">Ürünler</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">Hakkımızda</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">İletişim</a></li>
+                </ul>
+                
+                <div class="header-buttons">
+                    <button class="header-button" id="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="login.html" class="header-button">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="cart.html" class="header-button">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                
+                <div class="hamburger" id="hamburger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-close" id="mobile-close">
+                <i class="fas fa-times"></i>
+            </div>
+            <ul class="mobile-nav-links">
+                <li><a href="index.html" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
+                <li><a href="products.html" data-i18n="nav.products">Ürünler</a></li>
+                <li><a href="about.html" data-i18n="nav.about">Hakkımızda</a></li>
+                <li><a href="contact.html" data-i18n="nav.contact">İletişim</a></li>
+                <li><a href="login.html" data-i18n="nav.account">Hesabım</a></li>
+                <li><a href="cart.html" data-i18n="nav.cart">Sepetim</a></li>
+            </ul>
+            <div class="mobile-language-selector mt-4">
+                <select id="mobile-language-selector">
+                    <option value="tr" selected>Türkçe</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Search Overlay -->
+    <div class="overlay" id="search-overlay">
+        <div class="container">
+            <div class="search-form-container">
+                <form class="search-form">
+                    <input type="text" placeholder="Ürün ara..." data-i18n-placeholder="search.placeholder">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <button class="close-search" id="close-search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-i18n="hero.title">Geleneksel Türk Lokumu</h1>
+                <p data-i18n="hero.subtitle">En kaliteli malzemelerle el yapımı üretilen geleneksel Türk lokumu ve şekerlemeleri. Özel günlerinizin ve hediyelerinizin vazgeçilmez lezzeti.</p>
+                <div class="hero-buttons">
+                    <a href="products.html" class="btn btn-primary" data-i18n="hero.shop_now">Hemen Alışveriş Yap</a>
+                    <a href="about.html" class="btn btn-outline" data-i18n="hero.learn_more">Daha Fazla Bilgi</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="featured-categories">
+        <div class="container">
+            <h2 class="section-title" data-i18n="categories.title">Lokum Çeşitlerimiz</h2>
+            
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                    <div class="category-card">
+                        <img src="assets/images/categories/findik.jpg" alt="Fındıklı Lokum">
+                        <div class="category-content">
+                            <h3 class="category-title" data-i18n="categories.hazelnut">Fındıklı Lokum</h3>
+                            <a href="products.html?category=findikli-lokum" class="btn btn-sm btn-light" data-i18n="categories.view">Görüntüle</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                    <div class="category-card">
+                        <img src="assets/images/categories/gul.jpg" alt="Güllü Lokum">
+                        <div class="category-content">
+                            <h3 class="category-title" data-i18n="categories.rose">Güllü Lokum</h3>
+                            <a href="products.html?category=gullu-lokum" class="btn btn-sm btn-light" data-i18n="categories.view">Görüntüle</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                    <div class="category-card">
+                        <img src="assets/images/categories/fistik.jpg" alt="Antep Fıstıklı Lokum">
+                        <div class="category-content">
+                            <h3 class="category-title" data-i18n="categories.pistachio">Antep Fıstıklı Lokum</h3>
+                            <a href="products.html?category=antep-fistikli-lokum" class="btn btn-sm btn-light" data-i18n="categories.view">Görüntüle</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                    <div class="category-card">
+                        <img src="assets/images/categories/karisik.jpg" alt="Karışık Lokum">
+                        <div class="category-content">
+                            <h3 class="category-title" data-i18n="categories.mixed">Karışık Lokum</h3>
+                            <a href="products.html?category=karisik-lokum" class="btn btn-sm btn-light" data-i18n="categories.view">Görüntüle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="featured.title">Öne Çıkan Ürünler</h2>
+            
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/products/lokum1.jpg" alt="Fındıklı Türk Lokumu">
+                        <div class="product-badges">
+                            <span class="badge badge-new" data-i18n="product.new">Yeni</span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-text">(18)</span>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product.html?id=1" data-i18n="products.hazelnut_delight">Fındıklı Türk Lokumu</a>
+                        </h3>
+                        <div class="product-price">
+                            <span class="current-price">₺120.00</span>
+                        </div>
+                        <div class="product-description" data-i18n="products.hazelnut_desc">
+                            Ağızda dağılan tadıyla özenle seçilmiş fındıklarla hazırlanan geleneksel Türk lokumu.
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product-id="1" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            <button class="add-to-wishlist" data-product-id="1">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/products/lokum2.jpg" alt="Güllü Türk Lokumu">
+                        <div class="product-badges">
+                            <span class="badge badge-featured" data-i18n="product.featured">Öne Çıkan</span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-text">(24)</span>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product.html?id=2" data-i18n="products.rose_delight">Güllü Türk Lokumu</a>
+                        </h3>
+                        <div class="product-price">
+                            <span class="current-price">₺140.00</span>
+                        </div>
+                        <div class="product-description" data-i18n="products.rose_desc">
+                            Özel gül aroması ile hazırlanan, enfes kokulu geleneksel Türk lokumu.
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product-id="2" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            <button class="add-to-wishlist" data-product-id="2">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/products/lokum3.jpg" alt="Antep Fıstıklı Türk Lokumu">
+                        <div class="product-badges">
+                            <span class="badge badge-discount" data-i18n="product.discount">%10 İndirim</span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-text">(16)</span>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product.html?id=3" data-i18n="products.pistachio_delight">Antep Fıstıklı Türk Lokumu</a>
+                        </h3>
+                        <div class="product-price">
+                            <span class="current-price">₺160.00</span>
+                            <span class="old-price">₺180.00</span>
+                        </div>
+                        <div class="product-description" data-i18n="products.pistachio_desc">
+                            Antep fıstığının eşsiz lezzeti ile hazırlanan lokum, tadına doyum olmaz bir lezzet.
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product-id="3" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            <button class="add-to-wishlist" data-product-id="3">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/products/seker1.jpg" alt="Karışık Meyve Şekeri">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-text">(12)</span>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product.html?id=4" data-i18n="products.fruit_candy">Karışık Meyve Şekeri</a>
+                        </h3>
+                        <div class="product-price">
+                            <span class="current-price">₺90.00</span>
+                        </div>
+                        <div class="product-description" data-i18n="products.fruit_candy_desc">
+                            Farklı meyve tatlarında hazırlanan şekerlemeler, tatlı krizleri için ideal.
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product-id="4" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            <button class="add-to-wishlist" data-product-id="4">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="products.html" class="btn btn-primary" data-i18n="featured.view_all">Tüm Ürünleri Görüntüle</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-center">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="about-image">
+                        <img src="assets/images/about/about-image.jpg" alt="Özyürek Şekerleme Üretim">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="about-content">
+                        <h2 data-i18n="about.title">Özyürek Şekerleme Hikayesi</h2>
+                        <div class="about-text">
+                            <p data-i18n="about.text1">1950 yılından beri Türk lokumu ve şekerleme üretiminde en kaliteli malzemeleri kullanarak geleneksel tatları günümüze taşıyoruz. Üç kuşaktır devam eden ustalık ve tecrübemizle, her bir ürünümüz özenle hazırlanır.</p>
+                            <p data-i18n="about.text2">Özyürek Şekerleme olarak amacımız, Türk lokumu gibi geleneksel lezzetlerimizi dünya çapında tanıtmak ve sevdirmektir. Kalite ve lezzetten ödün vermeden, modern üretim teknikleriyle birleştirdiğimiz geleneksel tariflerimiz, damağınızda unutulmaz bir tat bırakacak.</p>
+                        </div>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4 data-i18n="about.quality_title">Premium Kalite</h4>
+                                    <p data-i18n="about.quality_text">En kaliteli malzemeler ve geleneksel üretim teknikleri ile hazırlanmış ürünler.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4 data-i18n="about.natural_title">Doğal İçerikler</h4>
+                                    <p data-i18n="about.natural_text">Sadece doğal içerikler kullanılır, yapay tatlandırıcı ve koruyucu içermez.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="about.html" class="btn btn-primary mt-4" data-i18n="about.read_more">Daha Fazla Bilgi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Special Offers -->
+    <section class="products-section bg-light">
+        <div class="container">
+            <h2 class="section-title" data-i18n="offers.title">Özel Teklifler</h2>
+            
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="product-card d-flex h-100">
+                        <div class="product-image" style="flex: 0 0 40%;">
+                            <img src="assets/images/products/set1.jpg" alt="Premium Lokum Koleksiyonu">
+                            <div class="product-badges">
+                                <span class="badge badge-discount" data-i18n="product.discount">%15 İndirim</span>
+                            </div>
+                        </div>
+                        <div class="product-content" style="flex: 0 0 60%;">
+                            <h3 class="product-title">
+                                <a href="product.html?id=5" data-i18n="products.premium_collection">Premium Lokum Koleksiyonu</a>
+                            </h3>
+                            <div class="product-price">
+                                <span class="current-price">₺280.00</span>
+                                <span class="old-price">₺330.00</span>
+                            </div>
+                            <div class="product-description" data-i18n="products.premium_collection_desc">
+                                Özel tasarım kutusunda, en sevilen lokum çeşitlerinin yer aldığı premium koleksiyon. Özel günler ve hediyeler için ideal.
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary btn-sm add-to-cart" data-product-id="5" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="product-card d-flex h-100">
+                        <div class="product-image" style="flex: 0 0 40%;">
+                            <img src="assets/images/products/set2.jpg" alt="Ramazan Özel Paketi">
+                            <div class="product-badges">
+                                <span class="badge badge-featured" data-i18n="product.special">Özel</span>
+                            </div>
+                        </div>
+                        <div class="product-content" style="flex: 0 0 60%;">
+                            <h3 class="product-title">
+                                <a href="product.html?id=6" data-i18n="products.special_package">Bayram Özel Paketi</a>
+                            </h3>
+                            <div class="product-price">
+                                <span class="current-price">₺350.00</span>
+                            </div>
+                            <div class="product-description" data-i18n="products.special_package_desc">
+                                Bayram ziyaretleriniz için özel hazırlanmış, çeşitli lokum ve şekerlemelerden oluşan özel paket.
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary btn-sm add-to-cart" data-product-id="6" data-i18n="product.add_to_cart">Sepete Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title" data-i18n="testimonials.title">Müşteri Yorumları</h2>
+            
+            <div class="testimonial-slider">
+                <div class="row">
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="testimonial-item">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <div class="testimonial-text" data-i18n="testimonials.text1">
+                                Özyürek Şekerleme'nin lokumları gerçekten harika. Özellikle fıstıklı lokumları bir başka. Ailem ve misafirlerim için her zaman tercih ediyorum.
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-image">
+                                    <img src="assets/images/testimonials/person1.jpg" alt="Ayşe Y.">
+                                </div>
+                                <div class="author-name" data-i18n="testimonials.author1">Ayşe Y.</div>
+                                <div class="author-title" data-i18n="testimonials.location1">İstanbul</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="testimonial-item">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <div class="testimonial-text" data-i18n="testimonials.text2">
+                                Yurtdışındaki arkadaşlarıma hediye olarak gönderdim ve çok beğendiler. Paketleme ve teslimat da çok profesyoneldi. Kesinlikle tavsiye ederim.
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-image">
+                                    <img src="assets/images/testimonials/person2.jpg" alt="Mehmet K.">
+                                </div>
+                                <div class="author-name" data-i18n="testimonials.author2">Mehmet K.</div>
+                                <div class="author-title" data-i18n="testimonials.location2">Ankara</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="testimonial-item">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <div class="testimonial-text" data-i18n="testimonials.text3">
+                                Güllü lokumları denedim ve harika bir aromaya sahipti. Eski İstanbul lezzetlerini andıran gerçek bir Türk lokumu. Teşekkürler Özyürek Şekerleme.
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-image">
+                                    <img src="assets/images/testimonials/person3.jpg" alt="Zeynep T.">
+                                </div>
+                                <div class="author-name" data-i18n="testimonials.author3">Zeynep T.</div>
+                                <div class="author-title" data-i18n="testimonials.location3">İzmir</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="newsletter-section bg-pattern py-5">
+        <div class="container">
+            <div class="row justify-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="text-center mb-4">
+                        <h2 data-i18n="newsletter.title">Bültenimize Abone Olun</h2>
+                        <p data-i18n="newsletter.subtitle">Yeni ürünler, özel teklifler ve indirimlerden haberdar olmak için bültenimize abone olun.</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <div class="d-flex">
+                            <input type="email" class="newsletter-input" placeholder="E-posta adresiniz" data-i18n-placeholder="newsletter.placeholder" required>
+                            <button type="submit" class="btn btn-primary newsletter-button" data-i18n="newsletter.subscribe">Abone Ol</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-about">
+                    <h4 class="footer-title" data-i18n="footer.about_title">Hakkımızda</h4>
+                    <p data-i18n="footer.about_text">Özyürek Şekerleme olarak 1950'den beri geleneksel Türk lokumu ve şekerlemeleri üretiyoruz. Kalite ve lezzetten ödün vermeden, en iyi malzemelerle hazırlanan ürünlerimizi sevgiyle sunuyoruz.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4 class="footer-title" data-i18n="footer.quick_links">Hızlı Bağlantılar</h4>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+                        <li><a href="products.html" data-i18n="nav.products">Ürünler</a></li>
+                        <li><a href="about.html" data-i18n="nav.about">Hakkımızda</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">İletişim</a></li>
+                        <li><a href="privacy-policy.html" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+                        <li><a href="terms.html" data-i18n="footer.terms">Kullanım Koşulları</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4 class="footer-title" data-i18n="footer.contact">İletişim</h4>
+                    <ul>
+                        <li>
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text" data-i18n="footer.address">
+                                Kadıköy, İstanbul, Türkiye
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text" data-i18n="footer.phone">
+                                +90 212 555 44 33
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text" data-i18n="footer.email">
+                                info@ozyureksekerleme.com
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h4 class="footer-title" data-i18n="footer.working_hours">Çalışma Saatleri</h4>
+                    <p data-i18n="footer.working_days">Pazartesi - Cumartesi: 09:00 - 20:00</p>
+                    <p data-i18n="footer.sunday">Pazar: 10:00 - 18:00</p>
+                    <div class="payment-methods mt-3">
+                        <img src="assets/images/payment/payment-methods.png" alt="Ödeme Yöntemleri">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2023 Özyürek Şekerleme. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Loader -->
+    <div class="loader-container" id="loader">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/modules/cart.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sayfa yüklendiğinde loader'ı gizle
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
+            
+            // Dil seçimi
+            const languageSelector = document.getElementById('language-selector');
+            const mobileLanguageSelector = document.getElementById('mobile-language-selector');
+            const rtlStylesheet = document.getElementById('rtl-css');
+            
+            function changeLanguage(lang) {
+                // Dil bilgisini localStorage'a kaydet
+                localStorage.setItem('language', lang);
+                
+                // Dil dosyasını yükle
+                loadLanguage(lang);
+                
+                // RTL kontrolü
+                if (lang === 'ar') {
+                    document.documentElement.dir = 'rtl';
+                    document.body.classList.add('rtl');
+                    rtlStylesheet.disabled = false;
+                } else {
+                    document.documentElement.dir = 'ltr';
+                    document.body.classList.remove('rtl');
+                    rtlStylesheet.disabled = true;
+                }
+            }
+            
+            // Dil değiştirme event listener'ları
+            languageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+                mobileLanguageSelector.value = this.value;
+            });
+            
+            mobileLanguageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+                languageSelector.value = this.value;
+            });
+            
+            // Kaydedilmiş dil tercihini kontrol et
+            const savedLanguage = localStorage.getItem('language') || 'tr';
+            languageSelector.value = savedLanguage;
+            mobileLanguageSelector.value = savedLanguage;
+            changeLanguage(savedLanguage);
+            
+            // Hamburger Menü
+            const hamburger = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileClose = document.getElementById('mobile-close');
+            const overlay = document.createElement('div');
+            overlay.classList.add('overlay');
+            document.body.appendChild(overlay);
+            
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                hamburger.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                searchOverlay.style.display = 'none';
+            });
+            
+            // Arama Butonu
+            const searchButton = document.getElementById('search-button');
+            const searchOverlay = document.getElementById('search-overlay');
+            const closeSearch = document.getElementById('close-search');
+            
+            searchButton.addEventListener('click', function() {
+                searchOverlay.style.display = 'block';
+                overlay.classList.add('active');
+                document.querySelector('#search-overlay input').focus();
+            });
+            
+            closeSearch.addEventListener('click', function() {
+                searchOverlay.style.display = 'none';
+                overlay.classList.remove('active');
+            });
+            
+            // Back to top butonu
+            const backToTop = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'flex';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+            
+            backToTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Sepete ekleme fonksiyonu
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product-id');
+                    addToCart(productId, 1); // cart.js içinde tanımlı
+                });
+            });
+            
+            // Favori ekleme fonksiyonu
+            const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist');
+            
+            addToWishlistButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product-id');
+                    addToWishlist(productId); // İleride eklenecek
+                    
+                    // Şimdilik favori ikonunu değiştirme
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('far');
+                    icon.classList.toggle('fas');
+                    icon.style.color = icon.classList.contains('fas') ? 'var(--primary-color)' : '';
+                });
+            });
+            
+            // Bülten aboneliği
+            const newsletterForm = document.getElementById('newsletter-form');
+            
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = this.querySelector('input[type="email"]').value;
+                
+                // Burada API isteği yapılacak
+                console.log(`${email} adresi bültene abone oldu.`);
+                
+                // Başarılı mesajı göster
+                alert('Bültenimize başarıyla abone oldunuz!');
+                this.reset();
+            });
+        });
+        
+        // Dil yükleme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function loadLanguage(lang) {
+            fetch(`locales/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // Placeholder değerlerini güncelle
+                    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                        const key = element.getAttribute('data-i18n-placeholder');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.placeholder = value;
+                        }
+                    });
+                })
+                .catch(error => console.error('Dil dosyası yüklenemedi:', error));
+        }
+        
+        // Sepete ekleme fonksiyonu (cart.js içinde tam implementasyonu olacak)
+        function addToCart(productId, quantity) {
+            // Burada API isteği yapılacak
+            console.log(`Ürün #${productId}, ${quantity} adet sepete eklendi.`);
+            
+            // Sepet sayacını güncelle
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = parseInt(cartCount.textContent) + quantity;
+            
+            // Kullanıcıya bildirim göster
+            alert('Ürün sepete eklendi!');
+        }
+        
+        // Favori ekleme fonksiyonu (ileride eklenecek)
+        function addToWishlist(productId) {
+            console.log(`Ürün #${productId} favorilere eklendi.`);
+        }
+    </script>
+</body>
+</html>

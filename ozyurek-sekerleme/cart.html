@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetim - Özyürek Şekerleme</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Area -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="d-flex justify-between align-center">
+                    <div class="header-top-left">
+                        <span><i class="fas fa-phone"></i> <span data-i18n="header.phone">+90 212 123 45 67</span></span>
+                        <span><i class="fas fa-envelope"></i> <span data-i18n="header.email">info@ozyureksekerleme.com</span></span>
+                    </div>
+                    <div class="header-top-right">
+                        <div class="language-selector">
+                            <select id="language-selector">
+                                <option value="tr" selected>Türkçe</option>
+                                <option value="en">English</option>
+                                <option value="ar">العربية</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/images/logo/logo.png" alt="Özyürek Şekerleme Logo">
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" data-i18n="header.home">Ana Sayfa</a></li>
+                    <li><a href="products.html" data-i18n="header.products">Ürünler</a></li>
+                    <li><a href="about.html" data-i18n="header.about">Hakkımızda</a></li>
+                    <li><a href="contact.html" data-i18n="header.contact">İletişim</a></li>
+                </ul>
+                <div class="header-buttons">
+                    <a href="login.html" class="header-button" title="Hesabım">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="cart.html" class="header-button" title="Sepetim">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="cart-count">3</span>
+                    </a>
+                </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="#" class="mobile-close">
+            <i class="fas fa-times"></i>
+        </a>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" data-i18n="header.home">Ana Sayfa</a></li>
+            <li><a href="products.html" data-i18n="header.products">Ürünler</a></li>
+            <li><a href="about.html" data-i18n="header.about">Hakkımızda</a></li>
+            <li><a href="contact.html" data-i18n="header.contact">İletişim</a></li>
+            <li><a href="login.html" data-i18n="header.login">Giriş Yap</a></li>
+            <li><a href="register.html" data-i18n="header.register">Kayıt Ol</a></li>
+        </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+        <div class="breadcrumb">
+            <div class="breadcrumb-item">
+                <a href="index.html" data-i18n="breadcrumb.home">Ana Sayfa</a>
+            </div>
+            <div class="breadcrumb-item active" data-i18n="cart.my_cart">Sepetim</div>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <h1 class="section-title" data-i18n="cart.shopping_cart">Alışveriş Sepeti</h1>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Cart Items -->
+                    <div class="dashboard-card">
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="cart.product">Ürün</th>
+                                    <th data-i18n="cart.price">Fiyat</th>
+                                    <th data-i18n="cart.quantity">Adet</th>
+                                    <th data-i18n="cart.total">Toplam</th>
+                                    <th data-i18n="cart.actions">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Cart Item 1 -->
+                                <tr>
+                                    <td data-label="Ürün">
+                                        <div class="cart-product">
+                                            <div class="cart-product-image">
+                                                <img src="assets/images/products/lokum1.jpg" alt="Fındıklı Lokum">
+                                            </div>
+                                            <div class="cart-product-details">
+                                                <h4>Fındıklı Türk Lokumu</h4>
+                                                <p>Ağırlık: 500g</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Fiyat">
+                                        <div class="cart-product-price">₺120.00</div>
+                                    </td>
+                                    <td data-label="Adet">
+                                        <div class="cart-quantity">
+                                            <div class="quantity-btn minus">-</div>
+                                            <input type="text" class="quantity-input" value="1" min="1">
+                                            <div class="quantity-btn plus">+</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Toplam">
+                                        <div class="cart-product-price">₺120.00</div>
+                                    </td>
+                                    <td data-label="İşlemler">
+                                        <div class="cart-remove">
+                                            <i class="fas fa-trash"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Cart Item 2 -->
+                                <tr>
+                                    <td data-label="Ürün">
+                                        <div class="cart-product">
+                                            <div class="cart-product-image">
+                                                <img src="assets/images/products/lokum2.jpg" alt="Güllü Lokum">
+                                            </div>
+                                            <div class="cart-product-details">
+                                                <h4>Güllü Türk Lokumu</h4>
+                                                <p>Ağırlık: 250g</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Fiyat">
+                                        <div class="cart-product-price">₺75.00</div>
+                                    </td>
+                                    <td data-label="Adet">
+                                        <div class="cart-quantity">
+                                            <div class="quantity-btn minus">-</div>
+                                            <input type="text" class="quantity-input" value="1" min="1">
+                                            <div class="quantity-btn plus">+</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Toplam">
+                                        <div class="cart-product-price">₺75.00</div>
+                                    </td>
+                                    <td data-label="İşlemler">
+                                        <div class="cart-remove">
+                                            <i class="fas fa-trash"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Cart Item 3 -->
+                                <tr>
+                                    <td data-label="Ürün">
+                                        <div class="cart-product">
+                                            <div class="cart-product-image">
+                                                <img src="assets/images/products/seker1.jpg" alt="Meyve Şekeri">
+                                            </div>
+                                            <div class="cart-product-details">
+                                                <h4>Karışık Meyve Şekeri</h4>
+                                                <p>Ağırlık: 250g</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Fiyat">
+                                        <div class="cart-product-price">₺50.00</div>
+                                    </td>
+                                    <td data-label="Adet">
+                                        <div class="cart-quantity">
+                                            <div class="quantity-btn minus">-</div>
+                                            <input type="text" class="quantity-input" value="1" min="1">
+                                            <div class="quantity-btn plus">+</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Toplam">
+                                        <div class="cart-product-price">₺50.00</div>
+                                    </td>
+                                    <td data-label="İşlemler">
+                                        <div class="cart-remove">
+                                            <i class="fas fa-trash"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="cart-actions d-flex justify-between mt-4">
+                            <a href="products.html" class="btn btn-outline">
+                                <i class="fas fa-arrow-left"></i> <span data-i18n="cart.continue_shopping">Alışverişe Devam Et</span>
+                            </a>
+                            <button id="update-cart" class="btn btn-secondary">
+                                <i class="fas fa-sync-alt"></i> <span data-i18n="cart.update_cart">Sepeti Güncelle</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <h3 class="cart-summary-title" data-i18n="cart.cart_summary">Sepet Özeti</h3>
+
+                        <div class="summary-row">
+                            <div class="summary-label" data-i18n="cart.subtotal">Ara Toplam:</div>
+                            <div class="summary-value">₺245.00</div>
+                        </div>
+
+                        <div class="summary-row">
+                            <div class="summary-label" data-i18n="cart.shipping">Kargo:</div>
+                            <div class="summary-value">₺0.00</div>
+                        </div>
+
+                        <div class="summary-row">
+                            <div class="summary-label" data-i18n="cart.tax">KDV (8%):</div>
+                            <div class="summary-value">₺19.60</div>
+                        </div>
+
+                        <div class="summary-row total">
+                            <div class="summary-label" data-i18n="cart.total">Genel Toplam:</div>
+                            <div class="summary-value">₺264.60</div>
+                        </div>
+
+                        <!-- Coupon Code -->
+                        <div class="coupon-form">
+                            <h4 data-i18n="cart.coupon_code">Kupon Kodu</h4>
+                            <div class="coupon-input">
+                                <input type="text" class="form-control" placeholder="Kupon kodu giriniz" id="coupon-code">
+                                <button class="btn btn-primary coupon-button" id="apply-coupon" data-i18n="cart.apply_coupon">Uygula</button>
+                            </div>
+                        </div>
+
+                        <!-- Checkout Button -->
+                        <a href="checkout.html" class="btn btn-primary btn-block checkout-button" data-i18n="cart.proceed_to_checkout">Siparişi Tamamla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-about">
+                    <h3 class="footer-title" data-i18n="footer.about_us">Hakkımızda</h3>
+                    <p data-i18n="footer.about_text">Özyürek Şekerleme olarak, geleneksel Türk lokumu ve şekerlemelerini en kaliteli malzemelerle üretmekteyiz. 50 yılı aşkın tecrübemizle, geleneksel tatları modern dünyaya taşıyoruz.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3 class="footer-title" data-i18n="footer.quick_links">Hızlı Bağlantılar</h3>
+                    <ul>
+                        <li><a href="index.html" data-i18n="header.home">Ana Sayfa</a></li>
+                        <li><a href="products.html" data-i18n="header.products">Ürünler</a></li>
+                        <li><a href="about.html" data-i18n="header.about">Hakkımızda</a></li>
+                        <li><a href="contact.html" data-i18n="header.contact">İletişim</a></li>
+                        <li><a href="blog.html" data-i18n="header.blog">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h3 class="footer-title" data-i18n="footer.contact_us">Bize Ulaşın</h3>
+                    <ul>
+                        <li>
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="contact-text" data-i18n="footer.address">İstanbul, Türkiye</div>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                            <div class="contact-text">+90 212 123 45 67</div>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="contact-text">info@ozyureksekerleme.com</div>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                            <div class="contact-text" data-i18n="footer.working_hours">Pazartesi - Cumartesi: 09:00 - 18:00</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h3 class="footer-title" data-i18n="footer.newsletter">Bülten</h3>
+                    <p data-i18n="footer.newsletter_text">Yeni ürünler, kampanyalar ve indirimlerden haberdar olmak için bültenimize abone olun.</p>
+                    <div class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="E-posta adresiniz" required>
+                        <button type="submit" class="btn btn-primary newsletter-button" data-i18n="footer.subscribe">Abone Ol</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2023 Özyürek Şekerleme. <span data-i18n="footer.rights">Tüm hakları saklıdır.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>

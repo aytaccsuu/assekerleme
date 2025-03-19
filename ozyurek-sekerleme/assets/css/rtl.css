@@ -1,0 +1,477 @@
+ /**
+ * Özyürek Şekerleme - RTL CSS Dosyası
+ * Sağdan sola (Right-to-Left) dil desteği için stil düzenlemeleri
+ * Bu dosya Arapça gibi RTL diller için kullanılır
+ */
+
+/* ======================================================
+   RTL BASE STYLES
+====================================================== */
+html[dir="rtl"],
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ======================================================
+   GRID SYSTEM - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .row,
+.rtl .row {
+  flex-direction: row-reverse;
+}
+
+/* ======================================================
+   LAYOUT ADJUSTMENTS
+====================================================== */
+/* Margin Adjustments */
+html[dir="rtl"] .ml-1,
+.rtl .ml-1 {
+  margin-right: var(--spacing-xs);
+  margin-left: 0;
+}
+
+html[dir="rtl"] .ml-2,
+.rtl .ml-2 {
+  margin-right: var(--spacing-sm);
+  margin-left: 0;
+}
+
+html[dir="rtl"] .ml-3,
+.rtl .ml-3 {
+  margin-right: var(--spacing-md);
+  margin-left: 0;
+}
+
+html[dir="rtl"] .ml-4,
+.rtl .ml-4 {
+  margin-right: var(--spacing-lg);
+  margin-left: 0;
+}
+
+html[dir="rtl"] .ml-5,
+.rtl .ml-5 {
+  margin-right: var(--spacing-xl);
+  margin-left: 0;
+}
+
+html[dir="rtl"] .mr-1,
+.rtl .mr-1 {
+  margin-left: var(--spacing-xs);
+  margin-right: 0;
+}
+
+html[dir="rtl"] .mr-2,
+.rtl .mr-2 {
+  margin-left: var(--spacing-sm);
+  margin-right: 0;
+}
+
+html[dir="rtl"] .mr-3,
+.rtl .mr-3 {
+  margin-left: var(--spacing-md);
+  margin-right: 0;
+}
+
+html[dir="rtl"] .mr-4,
+.rtl .mr-4 {
+  margin-left: var(--spacing-lg);
+  margin-right: 0;
+}
+
+html[dir="rtl"] .mr-5,
+.rtl .mr-5 {
+  margin-left: var(--spacing-xl);
+  margin-right: 0;
+}
+
+/* Padding Adjustments */
+html[dir="rtl"] .pl-1,
+.rtl .pl-1 {
+  padding-right: var(--spacing-xs);
+  padding-left: 0;
+}
+
+html[dir="rtl"] .pl-2,
+.rtl .pl-2 {
+  padding-right: var(--spacing-sm);
+  padding-left: 0;
+}
+
+html[dir="rtl"] .pl-3,
+.rtl .pl-3 {
+  padding-right: var(--spacing-md);
+  padding-left: 0;
+}
+
+html[dir="rtl"] .pl-4,
+.rtl .pl-4 {
+  padding-right: var(--spacing-lg);
+  padding-left: 0;
+}
+
+html[dir="rtl"] .pl-5,
+.rtl .pl-5 {
+  padding-right: var(--spacing-xl);
+  padding-left: 0;
+}
+
+html[dir="rtl"] .pr-1,
+.rtl .pr-1 {
+  padding-left: var(--spacing-xs);
+  padding-right: 0;
+}
+
+html[dir="rtl"] .pr-2,
+.rtl .pr-2 {
+  padding-left: var(--spacing-sm);
+  padding-right: 0;
+}
+
+html[dir="rtl"] .pr-3,
+.rtl .pr-3 {
+  padding-left: var(--spacing-md);
+  padding-right: 0;
+}
+
+html[dir="rtl"] .pr-4,
+.rtl .pr-4 {
+  padding-left: var(--spacing-lg);
+  padding-right: 0;
+}
+
+html[dir="rtl"] .pr-5,
+.rtl .pr-5 {
+  padding-left: var(--spacing-xl);
+  padding-right: 0;
+}
+
+/* Text Alignment */
+html[dir="rtl"] .text-left,
+.rtl .text-left {
+  text-align: right;
+}
+
+html[dir="rtl"] .text-right,
+.rtl .text-right {
+  text-align: left;
+}
+
+/* ======================================================
+   HEADER - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .nav-links li,
+.rtl .nav-links li {
+  margin: 0 0 0 1.2rem;
+}
+
+html[dir="rtl"] .header-button,
+.rtl .header-button {
+  margin-right: 1.6rem;
+  margin-left: 0;
+}
+
+html[dir="rtl"] .cart-count,
+.rtl .cart-count {
+  right: auto;
+  left: -8px;
+}
+
+html[dir="rtl"] .nav-links a:hover,
+.rtl .nav-links a:hover {
+  padding-right: 0.5rem;
+  padding-left: 0;
+}
+
+/* ======================================================
+   FORMS - RTL ADJUSTMENTS
+====================================================== */
+/* Form Checkboxes */
+html[dir="rtl"] .form-check,
+.rtl .form-check {
+  padding-left: 0;
+  padding-right: 2.4rem;
+}
+
+html[dir="rtl"] .form-check-input,
+.rtl .form-check-input {
+  margin-left: 0;
+  margin-right: -2.4rem;
+}
+
+/* Form Select */
+html[dir="rtl"] .form-select,
+.rtl .form-select {
+  background-position: left 1.2rem center;
+  padding-right: 1.2rem;
+  padding-left: 3rem;
+}
+
+/* ======================================================
+   BUTTONS - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .btn-icon i,
+html[dir="rtl"] .btn-icon svg,
+.rtl .btn-icon i,
+.rtl .btn-icon svg {
+  margin-right: 0;
+  margin-left: 0.8rem;
+}
+
+/* ======================================================
+   PRODUCTS - RTL ADJUSTMENTS
+====================================================== */
+/* Product Badges */
+html[dir="rtl"] .product-badges,
+.rtl .product-badges {
+  left: auto;
+  right: 1rem;
+}
+
+/* Product Actions */
+html[dir="rtl"] .add-to-wishlist,
+.rtl .add-to-wishlist {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+/* Product Rating */
+html[dir="rtl"] .rating-stars,
+.rtl .rating-stars {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* ======================================================
+   CART - RTL ADJUSTMENTS
+====================================================== */
+/* Cart Product */
+html[dir="rtl"] .cart-product-image,
+.rtl .cart-product-image {
+  margin-right: 0;
+  margin-left: 1.5rem;
+}
+
+/* Cart Table */
+html[dir="rtl"] .cart-table th,
+.rtl .cart-table th {
+  text-align: right;
+}
+
+/* Cart Summary */
+html[dir="rtl"] .summary-row,
+.rtl .summary-row {
+  flex-direction: row-reverse;
+}
+
+/* Coupon Form */
+html[dir="rtl"] .coupon-button,
+.rtl .coupon-button {
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+}
+
+html[dir="rtl"] .coupon-input input,
+.rtl .coupon-input input {
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+/* ======================================================
+   BREADCRUMB - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .breadcrumb-item,
+.rtl .breadcrumb-item {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+html[dir="rtl"] .breadcrumb-item::after,
+.rtl .breadcrumb-item::after {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+/* ======================================================
+   PRODUCT DETAILS - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .product-quantity,
+.rtl .product-quantity {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .attribute-options,
+.rtl .attribute-options {
+  flex-direction: row-reverse;
+}
+
+/* ======================================================
+   TABS - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .tab-buttons,
+.rtl .tab-buttons {
+  flex-direction: row-reverse;
+}
+
+/* ======================================================
+   CHECKOUT - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .order-review-item,
+.rtl .order-review-item {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .payment-method label,
+.rtl .payment-method label {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .payment-method input,
+.rtl .payment-method input {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* ======================================================
+   ABOUT SECTION - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .about-image::before,
+.rtl .about-image::before {
+  left: 20px;
+  right: 20px;
+}
+
+html[dir="rtl"] .feature-icon,
+.rtl .feature-icon {
+  margin-right: 0;
+  margin-left: 2rem;
+}
+
+/* ======================================================
+   FOOTER - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .footer-title::after,
+.rtl .footer-title::after {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .footer-links a:hover,
+.rtl .footer-links a:hover {
+  padding-left: 0;
+  padding-right: 0.5rem;
+}
+
+html[dir="rtl"] .contact-icon,
+.rtl .contact-icon {
+  margin-right: 0;
+  margin-left: 1.5rem;
+}
+
+html[dir="rtl"] .newsletter-form,
+.rtl .newsletter-form {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .newsletter-button,
+.rtl .newsletter-button {
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+}
+
+html[dir="rtl"] .newsletter-input,
+.rtl .newsletter-input {
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+/* ======================================================
+   MOBILE MENU - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .mobile-menu,
+.rtl .mobile-menu {
+  right: auto;
+  left: -280px;
+}
+
+html[dir="rtl"] .mobile-menu.active,
+.rtl .mobile-menu.active {
+  right: auto;
+  left: 0;
+}
+
+html[dir="rtl"] .mobile-close,
+.rtl .mobile-close {
+  right: auto;
+  left: 20px;
+}
+
+/* ======================================================
+   UTILITIES - RTL ADJUSTMENTS
+====================================================== */
+html[dir="rtl"] .float-left,
+.rtl .float-left {
+  float: right;
+}
+
+html[dir="rtl"] .float-right,
+.rtl .float-right {
+  float: left;
+}
+
+/* ======================================================
+   RTL RESPONSIVE ADJUSTMENTS
+====================================================== */
+@media screen and (max-width: 991px) {
+  html[dir="rtl"] .mobile-nav-links a,
+  .rtl .mobile-nav-links a {
+    text-align: right;
+  }
+  
+  html[dir="rtl"] .hamburger,
+  .rtl .hamburger {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  html[dir="rtl"] .footer-contact li,
+  .rtl .footer-contact li {
+    flex-direction: row-reverse;
+  }
+  
+  html[dir="rtl"] .cart-table td::before,
+  .rtl .cart-table td::before {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  html[dir="rtl"] .payment-method label,
+  .rtl .payment-method label {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  html[dir="rtl"] .newsletter-form,
+  .rtl .newsletter-form {
+    flex-direction: column;
+  }
+  
+  html[dir="rtl"] .coupon-form,
+  .rtl .coupon-form {
+    flex-direction: column;
+  }
+  
+  html[dir="rtl"] .coupon-button,
+  html[dir="rtl"] .newsletter-button,
+  .rtl .coupon-button,
+  .rtl .newsletter-button {
+    border-radius: var(--border-radius-md);
+  }
+  
+  html[dir="rtl"] .coupon-input input,
+  html[dir="rtl"] .newsletter-input,
+  .rtl .coupon-input input,
+  .rtl .newsletter-input {
+    border-radius: var(--border-radius-md);
+  }
+}

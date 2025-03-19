@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş Yönetimi - Özyürek Şekerleme</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Admin panel özel stilleri -->
+    <style>
+        :root {
+            --primary-color: #e84c88; /* Pembe tonu */
+            --secondary-color: #7baa6d; /* Yeşil tonu */
+            --light-color: #f8f4e8; /* Krem tonu */
+            --dark-color: #3a3a3a;
+            --white-color: #ffffff;
+        }
+        
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--light-color);
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background-color: var(--white-color);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            max-width: 80%;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--white-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .admin-nav a i {
+            margin-right: 10px;
+        }
+        
+        .dashboard-card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .admin-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.view {
+            background-color: var(--secondary-color);
+        }
+        
+        .action-btn.edit {
+            background-color: #3498db;
+        }
+        
+        .action-btn.delete {
+            background-color: #e74c3c;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 300px;
+            width: 100%;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .search-box button {
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-options select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d43d79;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            margin: 0 5px;
+            border-radius: 4px;
+            text-decoration: none;
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a.active, .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-shipped {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-delivered {
+            background-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .language-selector {
+            margin-right: 20px;
+        }
+        
+        .language-selector select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .order-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .order-detail-header h3 {
+            margin: 0;
+        }
+        
+        .order-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .order-info-box {
+            flex: 1;
+            min-width: 250px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        
+        .order-info-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .order-info-box p {
+            margin: 5px 0;
+        }
+        
+        .order-items {
+            margin-bottom: 30px;
+        }
+        
+        .order-product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .order-totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+        
+        .order-total-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 5px;
+        }
+        
+        .order-total-label {
+            font-weight: 500;
+            margin-right: 15px;
+            min-width: 150px;
+            text-align: right;
+        }
+        
+        .order-total-value {
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .order-status-timeline {
+            margin: 30px 0;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .status-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 8px;
+            width: 4px;
+            background-color: #e0e0e0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            z-index: 1;
+        }
+        
+        .timeline-item.completed::before {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .timeline-item.active::before {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .timeline-content {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        
+        .timeline-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .order-updates {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .admin-sidebar, .admin-header, .filter-bar, .pagination, .status-update-section {
+                display: none !important;
+            }
+            
+            .admin-wrapper {
+                display: block;
+            }
+            
+            .admin-content {
+                padding: 0;
+                margin: 0;
+                background-color: white;
+                overflow: visible;
+            }
+            
+            .dashboard-card {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .action-btn {
+                display: none;
+            }
+            
+            .order-detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../assets/images/logo/logo-white.png" alt="Özyürek Şekerleme Logo">
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span data-i18n="admin.dashboard">Panel</span></a></li>
+                    <li><a href="products.html"><i class="fas fa-box"></i> <span data-i18n="admin.products">Ürünler</span></a></li>
+                    <li><a href="categories.html"><i class="fas fa-tags"></i> <span data-i18n="admin.categories">Kategoriler</span></a></li>
+                    <li><a href="orders.html" class="active"><i class="fas fa-shopping-cart"></i> <span data-i18n="admin.orders">Siparişler</span></a></li>
+                    <li><a href="discounts.html"><i class="fas fa-percent"></i> <span data-i18n="admin.discounts">İndirimler</span></a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> <span data-i18n="admin.notifications">Bildirimler</span></a></li>
+                    <li><a href="translations.html"><i class="fas fa-language"></i> <span data-i18n="admin.translations">Çeviriler</span></a></li>
+                    <li><a href="../index.html" target="_blank"><i class="fas fa-globe"></i> <span data-i18n="admin.visit_site">Siteyi Görüntüle</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-content">
+            <header class="admin-header">
+                <h1 data-i18n="admin.order_management">Sipariş Yönetimi</h1>
+                <div class="admin-header-right" style="display: flex; align-items: center;">
+                    <div class="language-selector">
+                        <select id="admin-language-selector">
+                            <option value="tr" selected>Türkçe</option>
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                        </select>
+                    </div>
+                    <div class="admin-user-menu">
+                        <div class="user-info">
+                            <img src="../assets/images/icons/admin-avatar.jpg" alt="Admin">
+                            <span>Admin <i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="orders-management">
+                <div class="dashboard-card">
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <input type="text" id="search-order" placeholder="Sipariş No veya Müşteri Ara...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                        
+                        <div class="filter-options">
+                            <select id="status-filter">
+                                <option value="" data-i18n="admin.all_statuses">Tüm Durumlar</option>
+                                <option value="pending" data-i18n="admin.pending">Onay Bekliyor</option>
+                                <option value="processing" data-i18n="admin.processing">Hazırlanıyor</option>
+                                <option value="shipped" data-i18n="admin.shipped">Kargoya Verildi</option>
+                                <option value="delivered" data-i18n="admin.delivered">Teslim Edildi</option>
+                                <option value="cancelled" data-i18n="admin.cancelled">İptal Edildi</option>
+                            </select>
+                            
+                            <select id="date-filter">
+                                <option value="" data-i18n="admin.all_dates">Tüm Tarihler</option>
+                                <option value="today" data-i18n="admin.today">Bugün</option>
+                                <option value="yesterday" data-i18n="admin.yesterday">Dün</option>
+                                <option value="last7days" data-i18n="admin.last7days">Son 7 Gün</option>
+                                <option value="last30days" data-i18n="admin.last30days">Son 30 Gün</option>
+                                <option value="thismonth" data-i18n="admin.this_month">Bu Ay</option>
+                                <option value="lastmonth" data-i18n="admin.last_month">Geçen Ay</option>
+                            </select>
+                            
+                            <select id="payment-filter">
+                                <option value="" data-i18n="admin.all_payment_methods">Tüm Ödeme Yöntemleri</option>
+                                <option value="credit_card" data-i18n="admin.credit_card">Kredi Kartı</option>
+                                <option value="cash_on_delivery" data-i18n="admin.cash_on_delivery">Kapıda Ödeme</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="admin.order_id">Sipariş No</th>
+                                <th data-i18n="admin.customer">Müşteri</th>
+                                <th data-i18n="admin.date">Tarih</th>
+                                <th data-i18n="admin.amount">Tutar</th>
+                                <th data-i18n="admin.payment_method">Ödeme Yöntemi</th>
+                                <th data-i18n="admin.status">Durum</th>
+                                <th style="width: 100px;" data-i18n="admin.actions">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-5862</td>
+                                <td>Ahmet Yılmaz</td>
+                                <td>12.03.2023</td>
+                                <td>₺245.00</td>
+                                <td data-i18n="admin.credit_card">Kredi Kartı</td>
+                                <td><span class="status-badge status-processing" data-i18n="admin.processing">Hazırlanıyor</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5862')"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="action-btn edit" title="Durumu Güncelle" onclick="updateOrderStatus('ORD-5862')"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="İptal Et" onclick="cancelOrder('ORD-5862')"><i class="fas fa-times"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5861</td>
+                                <td>Mehmet Demir</td>
+                                <td>12.03.2023</td>
+                                <td>₺580.00</td>
+                                <td data-i18n="admin.cash_on_delivery">Kapıda Ödeme</td>
+                                <td><span class="status-badge status-pending" data-i18n="admin.pending">Onay Bekliyor</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5861')"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="action-btn edit" title="Durumu Güncelle" onclick="updateOrderStatus('ORD-5861')"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="İptal Et" onclick="cancelOrder('ORD-5861')"><i class="fas fa-times"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5860</td>
+                                <td>Ayşe Kaya</td>
+                                <td>11.03.2023</td>
+                                <td>₺350.00</td>
+                                <td data-i18n="admin.credit_card">Kredi Kartı</td>
+                                <td><span class="status-badge status-shipped" data-i18n="admin.shipped">Kargoya Verildi</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5860')"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="action-btn edit" title="Durumu Güncelle" onclick="updateOrderStatus('ORD-5860')"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="İptal Et" onclick="cancelOrder('ORD-5860')"><i class="fas fa-times"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5859</td>
+                                <td>Mustafa Aydın</td>
+                                <td>10.03.2023</td>
+                                <td>₺420.00</td>
+                                <td data-i18n="admin.credit_card">Kredi Kartı</td>
+                                <td><span class="status-badge status-delivered" data-i18n="admin.delivered">Teslim Edildi</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5859')"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5858</td>
+                                <td>Zeynep Koç</td>
+                                <td>10.03.2023</td>
+                                <td>₺185.00</td>
+                                <td data-i18n="admin.cash_on_delivery">Kapıda Ödeme</td>
+                                <td><span class="status-badge status-delivered" data-i18n="admin.delivered">Teslim Edildi</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5858')"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-5857</td>
+                                <td>Ali Yıldız</td>
+                                <td>09.03.2023</td>
+                                <td>₺275.00</td>
+                                <td data-i18n="admin.credit_card">Kredi Kartı</td>
+                                <td><span class="status-badge status-cancelled" data-i18n="admin.cancelled">İptal Edildi</span></td>
+                                <td>
+                                    <a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder('ORD-5857')"><i class="fas fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Detail Modal -->
+    <div class="modal-overlay" id="order-detail-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="order-detail-title">Sipariş Detayı #ORD-5862</h2>
+                <button class="modal-close" id="close-detail-modal">&times;</button>
+            </div>
+            <div class="order-detail-content">
+                <div class="order-detail-header">
+                    <h3>
+                        <span class="status-badge status-processing" id="order-status-badge">Hazırlanıyor</span>
+                        <span class="order-date">12.03.2023 - 14:35</span>
+                    </h3>
+                    <div class="order-actions">
+                        <button class="btn" onclick="printOrderDetails()"><i class="fas fa-print"></i> Yazdır</button>
+                        <button class="btn btn-primary" onclick="updateOrderStatus(document.getElementById('order-id').value)"><i class="fas fa-edit"></i> Durumu Güncelle</button>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="order-id" value="ORD-5862">
+                
+                <div class="order-info">
+                    <div class="order-info-box">
+                        <h4 data-i18n="admin.customer_info">Müşteri Bilgileri</h4>
+                        <p><strong data-i18n="admin.fullname">Ad Soyad</strong>: <span id="customer-name">Ahmet Yılmaz</span></p>
+                        <p><strong data-i18n="admin.email">E-posta</strong>: <span id="customer-email">ahmet.yilmaz@example.com</span></p>
+                        <p><strong data-i18n="admin.phone">Telefon</strong>: <span id="customer-phone">+90 555 123 4567</span></p>
+                    </div>
+                    
+                    <div class="order-info-box">
+                        <h4 data-i18n="admin.shipping_address">Teslimat Adresi</h4>
+                        <p id="shipping-address">Atatürk Mah. Gül Sok. No: 15/4<br>Kadıköy / İstanbul<br>34700</p>
+                    </div>
+                    
+                    <div class="order-info-box">
+                        <h4 data-i18n="admin.billing_address">Fatura Adresi</h4>
+                        <p id="billing-address">Atatürk Mah. Gül Sok. No: 15/4<br>Kadıköy / İstanbul<br>34700</p>
+                    </div>
+                    
+                    <div class="order-info-box">
+                        <h4 data-i18n="admin.payment_info">Ödeme Bilgileri</h4>
+                        <p><strong data-i18n="admin.payment_method">Ödeme Yöntemi</strong>: <span id="payment-method">Kredi Kartı</span></p>
+                        <p><strong data-i18n="admin.payment_status">Ödeme Durumu</strong>: <span id="payment-status">Ödendi</span></p>
+                        <p><strong data-i18n="admin.transaction_id">İşlem No</strong>: <span id="transaction-id">TXN123456789</span></p>
+                    </div>
+                </div>
+                
+                <div class="order-items">
+                    <h4 data-i18n="admin.order_items">Sipariş Ürünleri</h4>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;" data-i18n="admin.image">Resim</th>
+                                <th data-i18n="admin.product">Ürün</th>
+                                <th data-i18n="admin.weight">Ağırlık</th>
+                                <th data-i18n="admin.price">Fiyat</th>
+                                <th data-i18n="admin.quantity">Adet</th>
+                                <th data-i18n="admin.total">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="../assets/images/products/lokum1.jpg" alt="Fındıklı Lokum" class="order-product-image"></td>
+                                <td>Fındıklı Türk Lokumu</td>
+                                <td>500g</td>
+                                <td>₺120.00</td>
+                                <td>1</td>
+                                <td>₺120.00</td>
+                            </tr>
+                            <tr>
+                                <td><img src="../assets/images/products/lokum2.jpg" alt="Güllü Lokum" class="order-product-image"></td>
+                                <td>Güllü Türk Lokumu</td>
+                                <td>250g</td>
+                                <td>₺75.00</td>
+                                <td>1</td>
+                                <td>₺75.00</td>
+                            </tr>
+                            <tr>
+                                <td><img src="../assets/images/products/seker1.jpg" alt="Meyve Şekeri" class="order-product-image"></td>
+                                <td>Karışık Meyve Şekeri</td>
+                                <td>250g</td>
+                                <td>₺50.00</td>
+                                <td>1</td>
+                                <td>₺50.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="order-totals">
+                        <div class="order-total-row">
+                            <div class="order-total-label" data-i18n="admin.subtotal">Ara Toplam:</div>
+                            <div class="order-total-value">₺245.00</div>
+                        </div>
+                        <div class="order-total-row">
+                            <div class="order-total-label" data-i18n="admin.shipping">Kargo Ücreti:</div>
+                            <div class="order-total-value">₺0.00</div>
+                        </div>
+                        <div class="order-total-row">
+                            <div class="order-total-label" data-i18n="admin.tax">KDV (8%):</div>
+                            <div class="order-total-value">₺19.60</div>
+                        </div>
+                        <div class="order-total-row" style="font-weight: bold; margin-top: 10px;">
+                            <div class="order-total-label" data-i18n="admin.total">Genel Toplam:</div>
+                            <div class="order-total-value">₺264.60</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-status-history">
+                    <h4 data-i18n="admin.order_status_history">Sipariş Durumu Geçmişi</h4>
+                    <div class="order-status-timeline">
+                        <div class="status-line"></div>
+                        <div class="timeline-item completed">
+                            <div class="timeline-content">
+                                <h4 data-i18n="admin.order_received">Sipariş Alındı</h4>
+                                <p class="timeline-date">12.03.2023 - 14:35</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item completed">
+                            <div class="timeline-content">
+                                <h4 data-i18n="admin.payment_confirmed">Ödeme Onaylandı</h4>
+                                <p class="timeline-date">12.03.2023 - 14:36</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-content">
+                                <h4 data-i18n="admin.processing">Hazırlanıyor</h4>
+                                <p class="timeline-date">12.03.2023 - 15:02</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="admin.shipped">Kargoya Verildi</h4>
+                                <p class="timeline-date">-</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="admin.delivered">Teslim Edildi</h4>
+                                <p class="timeline-date">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-notes">
+                    <h4 data-i18n="admin.order_notes">Sipariş Notları</h4>
+                    <p id="order-notes-content">Lütfen kapıda zile basınız. Komşuya bırakmayınız.</p>
+                </div>
+                
+                <div class="status-update-section">
+                    <h4 data-i18n="admin.add_order_update">Sipariş Güncellemesi Ekle</h4>
+                    <div class="form-group">
+                        <label for="update-note">Not</label>
+                        <textarea id="update-note" class="form-control" placeholder="Sipariş ile ilgili bir not ekleyin..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="add-update-btn"><i class="fas fa-plus"></i> Güncelleme Ekle</button>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="close-order-details">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Update Order Status Modal -->
+    <div class="modal-overlay" id="status-update-modal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 data-i18n="admin.update_order_status">Sipariş Durumunu Güncelle</h2>
+                <button class="modal-close" id="close-status-modal">&times;</button>
+            </div>
+            <form id="status-update-form">
+                <input type="hidden" id="update-order-id" value="">
+                
+                <div class="form-group">
+                    <label for="order-status" data-i18n="admin.status">Durum</label>
+                    <select id="order-status" class="form-control">
+                        <option value="pending" data-i18n="admin.pending">Onay Bekliyor</option>
+                        <option value="processing" data-i18n="admin.processing">Hazırlanıyor</option>
+                        <option value="shipped" data-i18n="admin.shipped">Kargoya Verildi</option>
+                        <option value="delivered" data-i18n="admin.delivered">Teslim Edildi</option>
+                        <option value="cancelled" data-i18n="admin.cancelled">İptal Edildi</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status-note" data-i18n="admin.note">Not</label>
+                    <textarea id="status-note" class="form-control" placeholder="Durum güncellemesi için bir not ekleyin..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="notify-customer" checked>
+                        <span data-i18n="admin.notify_customer">Müşteriye Bildirim Gönder</span>
+                    </label>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="cancel-status-update" data-i18n="admin.cancel">İptal</button>
+                    <button type="submit" class="btn btn-primary" id="save-status-update" data-i18n="admin.update">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Cancel Order Confirmation Modal -->
+    <div class="modal-overlay" id="cancel-order-modal">
+        <div class="modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="admin.cancel_order">Sipariş İptal Et</h2>
+                <button class="modal-close" id="close-cancel-modal">&times;</button>
+            </div>
+            <p data-i18n="admin.cancel_order_confirm">Bu siparişi iptal etmek istediğinizden emin misiniz?</p>
+            <div class="form-group">
+                <label for="cancel-reason" data-i18n="admin.cancel_reason">İptal Nedeni</label>
+                <textarea id="cancel-reason" class="form-control" placeholder="İptal nedeni girin..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="notify-customer-cancel" checked>
+                    <span data-i18n="admin.notify_customer">Müşteriye Bildirim Gönder</span>
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" id="cancel-cancel-order" data-i18n="admin.go_back">Geri Dön</button>
+                <button type="button" class="btn btn-primary" id="confirm-cancel-order" data-i18n="admin.confirm_cancel">İptal Et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/i18n.js"></script>
+    <script src="../assets/js/admin/admin.js"></script>
+    <script src="../assets/js/admin/order-manager.js"></script>
+    <script>
+        // Admin panel login kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage'dan admin bilgilerini kontrol et
+            const adminEmail = localStorage.getItem('adminEmail');
+            if (!adminEmail || adminEmail !== 'aytaccsu1@gmail.com') {
+                window.location.href = '../login.html?redirect=admin';
+            }
+            
+            // Dil değiştirici
+            const languageSelector = document.getElementById('admin-language-selector');
+            languageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+            
+            // Dil dosyalarını yükle
+            const currentLang = localStorage.getItem('language') || 'tr';
+            languageSelector.value = currentLang;
+            loadLanguage(currentLang);
+            
+            // Sipariş detayı modalını yönet
+            const orderDetailModal = document.getElementById('order-detail-modal');
+            const closeDetailModal = document.getElementById('close-detail-modal');
+            const closeOrderDetails = document.getElementById('close-order-details');
+            
+            window.viewOrder = function(orderId) {
+                orderDetailModal.style.display = 'flex';
+                document.getElementById('order-detail-title').textContent = `Sipariş Detayı #${orderId}`;
+                document.getElementById('order-id').value = orderId;
+                
+                // Burada API'den sipariş detayları alınacak
+                // Şimdilik örnek verilerle dolduruyoruz
+                loadOrderDetails(orderId);
+            };
+            
+            closeDetailModal.addEventListener('click', function() {
+                orderDetailModal.style.display = 'none';
+            });
+            
+            closeOrderDetails.addEventListener('click', function() {
+                orderDetailModal.style.display = 'none';
+            });
+            
+            // Sipariş durumu güncelleme modalını yönet
+            const statusUpdateModal = document.getElementById('status-update-modal');
+            const closeStatusModal = document.getElementById('close-status-modal');
+            const cancelStatusUpdate = document.getElementById('cancel-status-update');
+            
+            window.updateOrderStatus = function(orderId) {
+                statusUpdateModal.style.display = 'flex';
+                document.getElementById('update-order-id').value = orderId;
+                
+                // Mevcut sipariş durumunu seç
+                const currentStatus = getCurrentOrderStatus(orderId);
+                document.getElementById('order-status').value = currentStatus;
+            };
+            
+            closeStatusModal.addEventListener('click', function() {
+                statusUpdateModal.style.display = 'none';
+            });
+            
+            cancelStatusUpdate.addEventListener('click', function() {
+                statusUpdateModal.style.display = 'none';
+            });
+            
+            // Sipariş iptal modalını yönet
+            const cancelOrderModal = document.getElementById('cancel-order-modal');
+            const closeCancelModal = document.getElementById('close-cancel-modal');
+            const cancelCancelOrder = document.getElementById('cancel-cancel-order');
+            
+            window.cancelOrder = function(orderId) {
+                // Teslim edilmiş siparişler iptal edilemez
+                if (getCurrentOrderStatus(orderId) === 'delivered') {
+                    alert('Teslim edilmiş siparişler iptal edilemez!');
+                    return;
+                }
+                
+                cancelOrderModal.style.display = 'flex';
+                document.getElementById('update-order-id').value = orderId;
+            };
+            
+            closeCancelModal.addEventListener('click', function() {
+                cancelOrderModal.style.display = 'none';
+            });
+            
+            cancelCancelOrder.addEventListener('click', function() {
+                cancelOrderModal.style.display = 'none';
+            });
+            
+            // Sipariş durumu güncelleme formu
+            const statusUpdateForm = document.getElementById('status-update-form');
+            statusUpdateForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const orderId = document.getElementById('update-order-id').value;
+                const status = document.getElementById('order-status').value;
+                const note = document.getElementById('status-note').value;
+                const notify = document.getElementById('notify-customer').checked;
+                
+                // Burada API isteği ile sipariş durumu güncelleme yapılacak
+                console.log(`Sipariş #${orderId} durumu güncellendi: ${status}`);
+                console.log(`Not: ${note}`);
+                console.log(`Bildirim: ${notify}`);
+                
+                // Demo amaçlı tablodaki durumu güncelle
+                updateOrderStatusInTable(orderId, status);
+                
+                statusUpdateModal.style.display = 'none';
+            });
+            
+            // Sipariş iptal et butonunu yönet
+            const confirmCancelOrder = document.getElementById('confirm-cancel-order');
+            confirmCancelOrder.addEventListener('click', function() {
+                const orderId = document.getElementById('update-order-id').value;
+                const reason = document.getElementById('cancel-reason').value;
+                const notify = document.getElementById('notify-customer-cancel').checked;
+                
+                // Burada API isteği ile sipariş iptali yapılacak
+                console.log(`Sipariş #${orderId} iptal edildi`);
+                console.log(`Neden: ${reason}`);
+                console.log(`Bildirim: ${notify}`);
+                
+                // Demo amaçlı tablodaki durumu güncelle
+                updateOrderStatusInTable(orderId, 'cancelled');
+                
+                cancelOrderModal.style.display = 'none';
+            });
+            
+            // Sipariş güncellemesi ekle butonunu yönet
+            const addUpdateBtn = document.getElementById('add-update-btn');
+            addUpdateBtn.addEventListener('click', function() {
+                const note = document.getElementById('update-note').value;
+                
+                if (!note) {
+                    alert('Lütfen bir not giriniz.');
+                    return;
+                }
+                
+                // Burada API isteği ile sipariş notu ekleme yapılacak
+                console.log(`Sipariş notu eklendi: ${note}`);
+                
+                // Notu temizle
+                document.getElementById('update-note').value = '';
+                
+                // Başarı mesajı göster
+                alert('Güncelleme başarıyla eklendi.');
+            });
+            
+            // Filtreleme işlemleri
+            const searchBox = document.getElementById('search-order');
+            const statusFilter = document.getElementById('status-filter');
+            const dateFilter = document.getElementById('date-filter');
+            const paymentFilter = document.getElementById('payment-filter');
+            
+            searchBox.addEventListener('keyup', function() {
+                filterOrders();
+            });
+            
+            statusFilter.addEventListener('change', function() {
+                filterOrders();
+            });
+            
+            dateFilter.addEventListener('change', function() {
+                filterOrders();
+            });
+            
+            paymentFilter.addEventListener('change', function() {
+                filterOrders();
+            });
+        });
+        
+        // Sipariş durumunu tabloda güncelle (demo amaçlı)
+        function updateOrderStatusInTable(orderId, status) {
+            const rows = document.querySelectorAll('.admin-table tbody tr');
+            
+            rows.forEach(row => {
+                const orderIdCell = row.querySelector('td:first-child');
+                if (orderIdCell && orderIdCell.textContent === `#${orderId}`) {
+                    const statusCell = row.querySelector('td:nth-child(6)');
+                    const statusBadge = statusCell.querySelector('.status-badge');
+                    
+                    // Sınıfları temizle
+                    statusBadge.classList.remove('status-pending', 'status-processing', 'status-shipped', 'status-delivered', 'status-cancelled');
+                    // Yeni sınıfı ekle
+                    statusBadge.classList.add(`status-${status}`);
+                    
+                    // Durumu güncelle
+                    if (status === 'pending') {
+                        statusBadge.textContent = 'Onay Bekliyor';
+                    } else if (status === 'processing') {
+                        statusBadge.textContent = 'Hazırlanıyor';
+                    } else if (status === 'shipped') {
+                        statusBadge.textContent = 'Kargoya Verildi';
+                    } else if (status === 'delivered') {
+                        statusBadge.textContent = 'Teslim Edildi';
+                    } else if (status === 'cancelled') {
+                        statusBadge.textContent = 'İptal Edildi';
+                    }
+                    
+                    // Teslim edilmiş siparişlerde silme butonunu kaldır
+                    if (status === 'delivered' || status === 'cancelled') {
+                        const actionCell = row.querySelector('td:last-child');
+                        actionCell.innerHTML = '<a href="#" class="action-btn view" title="Görüntüle" onclick="viewOrder(\'' + orderId + '\')"><i class="fas fa-eye"></i></a>';
+                    }
+                }
+            });
+        }
+        
+        // Mevcut sipariş durumunu al (demo amaçlı)
+        function getCurrentOrderStatus(orderId) {
+            const rows = document.querySelectorAll('.admin-table tbody tr');
+            
+            for (const row of rows) {
+                const orderIdCell = row.querySelector('td:first-child');
+                if (orderIdCell && orderIdCell.textContent === `#${orderId}`) {
+                    const statusCell = row.querySelector('td:nth-child(6)');
+                    const statusBadge = statusCell.querySelector('.status-badge');
+                    
+                    if (statusBadge.classList.contains('status-pending')) {
+                        return 'pending';
+                    } else if (statusBadge.classList.contains('status-processing')) {
+                        return 'processing';
+                    } else if (statusBadge.classList.contains('status-shipped')) {
+                        return 'shipped';
+                    } else if (statusBadge.classList.contains('status-delivered')) {
+                        return 'delivered';
+                    } else if (statusBadge.classList.contains('status-cancelled')) {
+                        return 'cancelled';
+                    }
+                }
+            }
+            
+            return 'pending'; // Varsayılan durum
+        }
+        
+        // Sipariş detaylarını yükle (demo amaçlı)
+        function loadOrderDetails(orderId) {
+            // Gerçek bir uygulamada burada API çağrısı yapılacak
+            console.log(`Sipariş #${orderId} detayları yükleniyor...`);
+            
+            // Mevcut durumu badge'e yansıt
+            const currentStatus = getCurrentOrderStatus(orderId);
+            const statusBadge = document.getElementById('order-status-badge');
+            
+            statusBadge.classList.remove('status-pending', 'status-processing', 'status-shipped', 'status-delivered', 'status-cancelled');
+            statusBadge.classList.add(`status-${currentStatus}`);
+            
+            if (currentStatus === 'pending') {
+                statusBadge.textContent = 'Onay Bekliyor';
+            } else if (currentStatus === 'processing') {
+                statusBadge.textContent = 'Hazırlanıyor';
+            } else if (currentStatus === 'shipped') {
+                statusBadge.textContent = 'Kargoya Verildi';
+            } else if (currentStatus === 'delivered') {
+                statusBadge.textContent = 'Teslim Edildi';
+            } else if (currentStatus === 'cancelled') {
+                statusBadge.textContent = 'İptal Edildi';
+            }
+            
+            // Timeline'ı güncelle
+            updateTimeline(currentStatus);
+        }
+        
+        // Timeline'ı güncelle (demo amaçlı)
+        function updateTimeline(status) {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            // Önce tüm sınıfları temizle
+            timelineItems.forEach(item => {
+                item.classList.remove('active', 'completed');
+            });
+            
+            // Duruma göre sınıfları ekle
+            if (status === 'pending') {
+                timelineItems[0].classList.add('active');
+            } else if (status === 'processing') {
+                timelineItems[0].classList.add('completed');
+                timelineItems[1].classList.add('completed');
+                timelineItems[2].classList.add('active');
+            } else if (status === 'shipped') {
+                timelineItems[0].classList.add('completed');
+                timelineItems[1].classList.add('completed');
+                timelineItems[2].classList.add('completed');
+                timelineItems[3].classList.add('active');
+            } else if (status === 'delivered') {
+                timelineItems[0].classList.add('completed');
+                timelineItems[1].classList.add('completed');
+                timelineItems[2].classList.add('completed');
+                timelineItems[3].classList.add('completed');
+                timelineItems[4].classList.add('completed');
+            } else if (status === 'cancelled') {
+                timelineItems[0].classList.add('completed');
+                timelineItems[1].classList.add('completed');
+                // İptal edilmiş siparişler için özel bir gösterim eklenebilir
+            }
+        }
+        
+        // Siparişleri filtrele (demo amaçlı)
+        function filterOrders() {
+            const searchText = document.getElementById('search-order').value.toLowerCase();
+            const statusValue = document.getElementById('status-filter').value;
+            const dateValue = document.getElementById('date-filter').value;
+            const paymentValue = document.getElementById('payment-filter').value;
+            
+            const rows = document.querySelectorAll('.admin-table tbody tr');
+            
+            rows.forEach(row => {
+                const orderId = row.querySelector('td:first-child').textContent.toLowerCase();
+                const customer = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const status = row.querySelector('td:nth-child(6) .status-badge').className.includes(statusValue);
+                const payment = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                
+                // Basit bir filtreleme uygula
+                const matchesSearch = orderId.includes(searchText) || customer.includes(searchText);
+                const matchesStatus = statusValue === '' || status;
+                const matchesPayment = paymentValue === '' || payment.includes(paymentValue);
+                
+                // Date filtresi için basit bir kontrol (gerçek uygulamada daha karmaşık olacak)
+                let matchesDate = true;
+                if (dateValue !== '') {
+                    // Burada tarih filtreleme mantığı uygulanacak
+                    // Şimdilik hepsini göster
+                }
+                
+                // Filtreleme sonuçlarına göre satırı göster/gizle
+                if (matchesSearch && matchesStatus && matchesPayment && matchesDate) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Sipariş yazdırma fonksiyonu
+        function printOrderDetails() {
+            window.print();
+        }
+        
+        // Dil değiştirme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            loadLanguage(lang);
+        }
+        
+        // Dil yükleme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function loadLanguage(lang) {
+            fetch(`../locales/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // Placeholder değerlerini güncelle
+                    document.getElementById('search-order').placeholder = data.admin.search_order || 'Sipariş No veya Müşteri Ara...';
+                    document.getElementById('status-note').placeholder = data.admin.status_note_placeholder || 'Durum güncellemesi için bir not ekleyin...';
+                    document.getElementById('update-note').placeholder = data.admin.order_update_placeholder || 'Sipariş ile ilgili bir not ekleyin...';
+                    document.getElementById('cancel-reason').placeholder = data.admin.cancel_reason_placeholder || 'İptal nedeni girin...';
+                    
+                    // RTL desteği
+                    if (lang === 'ar') {
+                        document.documentElement.dir = 'rtl';
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.documentElement.dir = 'ltr';
+                        document.body.classList.remove('rtl');
+                    }
+                })
+                .catch(error => console.error('Dil dosyası yüklenemedi:', error));
+        }
+    </script>
+</body>
+</html>

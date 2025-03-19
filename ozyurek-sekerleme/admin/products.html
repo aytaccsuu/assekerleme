@@ -1,0 +1,991 @@
+ 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Yönetimi - Özyürek Şekerleme</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Admin panel özel stilleri -->
+    <style>
+        :root {
+            --primary-color: #e84c88; /* Pembe tonu */
+            --secondary-color: #7baa6d; /* Yeşil tonu */
+            --light-color: #f8f4e8; /* Krem tonu */
+            --dark-color: #3a3a3a;
+            --white-color: #ffffff;
+        }
+        
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--light-color);
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background-color: var(--white-color);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            max-width: 80%;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--white-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .admin-nav a i {
+            margin-right: 10px;
+        }
+        
+        .dashboard-card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .admin-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .admin-product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.edit {
+            background-color: var(--secondary-color);
+        }
+        
+        .action-btn.delete {
+            background-color: #e74c3c;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 300px;
+            width: 100%;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .search-box button {
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-options select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d43d79;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            margin: 0 5px;
+            border-radius: 4px;
+            text-decoration: none;
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a.active, .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .image-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .language-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .language-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .language-tab.active {
+            background-color: #f9f9f9;
+            border-color: #e0e0e0;
+        }
+        
+        .language-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+        }
+        
+        .language-content.active {
+            display: block;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        /* Stock variation section */
+        .stock-variations {
+            margin-top: 15px;
+        }
+        
+        .variation-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .remove-variation {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .language-selector {
+            margin-right: 20px;
+        }
+        
+        .language-selector select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .status-active {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../assets/images/logo/logo-white.png" alt="Özyürek Şekerleme Logo">
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span data-i18n="admin.dashboard">Panel</span></a></li>
+                    <li><a href="products.html" class="active"><i class="fas fa-box"></i> <span data-i18n="admin.products">Ürünler</span></a></li>
+                    <li><a href="categories.html"><i class="fas fa-tags"></i> <span data-i18n="admin.categories">Kategoriler</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span data-i18n="admin.orders">Siparişler</span></a></li>
+                    <li><a href="discounts.html"><i class="fas fa-percent"></i> <span data-i18n="admin.discounts">İndirimler</span></a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> <span data-i18n="admin.notifications">Bildirimler</span></a></li>
+                    <li><a href="translations.html"><i class="fas fa-language"></i> <span data-i18n="admin.translations">Çeviriler</span></a></li>
+                    <li><a href="../index.html" target="_blank"><i class="fas fa-globe"></i> <span data-i18n="admin.visit_site">Siteyi Görüntüle</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-content">
+            <header class="admin-header">
+                <h1 data-i18n="admin.product_management">Ürün Yönetimi</h1>
+                <div class="admin-header-right" style="display: flex; align-items: center;">
+                    <div class="language-selector">
+                        <select id="admin-language-selector">
+                            <option value="tr" selected>Türkçe</option>
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                        </select>
+                    </div>
+                    <div class="admin-user-menu">
+                        <div class="user-info">
+                            <img src="../assets/images/icons/admin-avatar.jpg" alt="Admin">
+                            <span>Admin <i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="products-management">
+                <div class="dashboard-card">
+                    <div class="filter-bar">
+                        <a href="#" id="add-product-btn" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-i18n="admin.add_product">Ürün Ekle</span></a>
+                        
+                        <div class="search-box">
+                            <input type="text" id="search-product" placeholder="Ürün Ara...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                        
+                        <div class="filter-options">
+                            <select id="category-filter">
+                                <option value="" data-i18n="admin.all_categories">Tüm Kategoriler</option>
+                                <option value="1">Lokum Çeşitleri</option>
+                                <option value="2">Şekerlemeler</option>
+                                <option value="3">Özel Koleksiyonlar</option>
+                                <option value="4">Hediyelik Setler</option>
+                            </select>
+                            
+                            <select id="status-filter">
+                                <option value="" data-i18n="admin.all_statuses">Tüm Durumlar</option>
+                                <option value="active" data-i18n="admin.active">Aktif</option>
+                                <option value="inactive" data-i18n="admin.inactive">Pasif</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">#</th>
+                                <th style="width: 80px;" data-i18n="admin.image">Resim</th>
+                                <th data-i18n="admin.product_name">Ürün Adı</th>
+                                <th data-i18n="admin.category">Kategori</th>
+                                <th data-i18n="admin.price">Fiyat</th>
+                                <th data-i18n="admin.stock">Stok</th>
+                                <th data-i18n="admin.status">Durum</th>
+                                <th style="width: 100px;" data-i18n="admin.actions">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="../assets/images/products/lokum1.jpg" alt="Fındıklı Lokum" class="admin-product-image"></td>
+                                <td>Fındıklı Türk Lokumu</td>
+                                <td>Lokum Çeşitleri</td>
+                                <td>₺120.00</td>
+                                <td>250</td>
+                                <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                <td>
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editProduct(1)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteProduct(1)"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><img src="../assets/images/products/lokum2.jpg" alt="Güllü Lokum" class="admin-product-image"></td>
+                                <td>Güllü Türk Lokumu</td>
+                                <td>Lokum Çeşitleri</td>
+                                <td>₺140.00</td>
+                                <td>180</td>
+                                <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                <td>
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editProduct(2)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteProduct(2)"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><img src="../assets/images/products/lokum3.jpg" alt="Antep Fıstıklı Lokum" class="admin-product-image"></td>
+                                <td>Antep Fıstıklı Türk Lokumu</td>
+                                <td>Lokum Çeşitleri</td>
+                                <td>₺160.00</td>
+                                <td>200</td>
+                                <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                <td>
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editProduct(3)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteProduct(3)"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><img src="../assets/images/products/seker1.jpg" alt="Meyve Şekeri" class="admin-product-image"></td>
+                                <td>Karışık Meyve Şekeri</td>
+                                <td>Şekerlemeler</td>
+                                <td>₺90.00</td>
+                                <td>150</td>
+                                <td><span class="status-active" data-i18n="admin.active">Aktif</span></td>
+                                <td>
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editProduct(4)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteProduct(4)"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><img src="../assets/images/products/set1.jpg" alt="Özel Lokum Seti" class="admin-product-image"></td>
+                                <td>Premium Lokum Koleksiyonu</td>
+                                <td>Hediyelik Setler</td>
+                                <td>₺280.00</td>
+                                <td>50</td>
+                                <td><span class="status-inactive" data-i18n="admin.inactive">Pasif</span></td>
+                                <td>
+                                    <a href="#" class="action-btn edit" title="Düzenle" onclick="editProduct(5)"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="action-btn delete" title="Sil" onclick="deleteProduct(5)"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Add/Edit Modal -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title" data-i18n="admin.add_product">Ürün Ekle</h2>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id" value="">
+                
+                <div class="language-tabs">
+                    <div class="language-tab active" data-lang="tr">Türkçe</div>
+                    <div class="language-tab" data-lang="en">English</div>
+                    <div class="language-tab" data-lang="ar">العربية</div>
+                </div>
+                
+                <!-- Turkish Content -->
+                <div class="language-content active" data-lang="tr">
+                    <div class="form-group">
+                        <label for="product-name-tr">Ürün Adı</label>
+                        <input type="text" id="product-name-tr" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-description-tr">Ürün Açıklaması</label>
+                        <textarea id="product-description-tr" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- English Content -->
+                <div class="language-content" data-lang="en">
+                    <div class="form-group">
+                        <label for="product-name-en">Product Name</label>
+                        <input type="text" id="product-name-en" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-description-en">Product Description</label>
+                        <textarea id="product-description-en" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Arabic Content -->
+                <div class="language-content" data-lang="ar">
+                    <div class="form-group">
+                        <label for="product-name-ar">اسم المنتج</label>
+                        <input type="text" id="product-name-ar" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-description-ar">وصف المنتج</label>
+                        <textarea id="product-description-ar" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Common Fields -->
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="product-category">Kategori</label>
+                            <select id="product-category" class="form-control" required>
+                                <option value="">Kategori Seçin</option>
+                                <option value="1">Lokum Çeşitleri</option>
+                                <option value="2">Şekerlemeler</option>
+                                <option value="3">Özel Koleksiyonlar</option>
+                                <option value="4">Hediyelik Setler</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="product-status">Durum</label>
+                            <select id="product-status" class="form-control">
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Pasif</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="product-price">Fiyat (₺)</label>
+                            <input type="number" id="product-price" class="form-control" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="product-stock">Stok Miktarı</label>
+                            <input type="number" id="product-stock" class="form-control" min="0" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Ağırlık Varyasyonları</h3>
+                <div class="stock-variations" id="weight-variations">
+                    <div class="variation-item">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-option-1">Ağırlık Seçeneği</label>
+                            <select id="weight-option-1" class="form-control weight-option">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1kg">1kg</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-price-1">Fiyat (₺)</label>
+                            <input type="number" id="weight-price-1" class="form-control weight-price" step="0.01" min="0">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-stock-1">Stok</label>
+                            <input type="number" id="weight-stock-1" class="form-control weight-stock" min="0">
+                        </div>
+                        <button type="button" class="remove-variation" style="margin-top: 25px;"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <button type="button" id="add-variation" class="btn btn-primary" style="margin-top: 10px;"><i class="fas fa-plus"></i> Varyasyon Ekle</button>
+                
+                <div class="form-group">
+                    <label for="product-images">Ürün Görselleri</label>
+                    <input type="file" id="product-images" class="form-control" multiple accept="image/*">
+                    <div class="image-preview" id="image-preview">
+                        <!-- Preview images will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="cancel-product">İptal</button>
+                    <button type="submit" class="btn btn-primary" id="save-product">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="admin.confirm_delete">Silme Onayı</h2>
+                <button class="modal-close" id="close-delete-modal">&times;</button>
+            </div>
+            <p data-i18n="admin.delete_product_confirm">Bu ürünü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            <div class="modal-footer">
+                <button type="button" class="btn" id="cancel-delete" data-i18n="admin.cancel">İptal</button>
+                <button type="button" class="btn btn-primary" id="confirm-delete" data-i18n="admin.delete">Sil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/i18n.js"></script>
+    <script src="../assets/js/admin/admin.js"></script>
+    <script src="../assets/js/admin/product-manager.js"></script>
+    <script>
+        // Admin panel login kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage'dan admin bilgilerini kontrol et
+            const adminEmail = localStorage.getItem('adminEmail');
+            if (!adminEmail || adminEmail !== 'aytaccsu1@gmail.com') {
+                window.location.href = '../login.html?redirect=admin';
+            }
+            
+            // Dil değiştirici
+            const languageSelector = document.getElementById('admin-language-selector');
+            languageSelector.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+            
+            // Dil dosyalarını yükle
+            const currentLang = localStorage.getItem('language') || 'tr';
+            languageSelector.value = currentLang;
+            loadLanguage(currentLang);
+            
+            // Dil sekmelerini kontrol et
+            const langTabs = document.querySelectorAll('.language-tab');
+            langTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    
+                    // Aktif sekme sınıfını değiştir
+                    document.querySelectorAll('.language-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili içeriği göster
+                    document.querySelectorAll('.language-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.querySelector(`.language-content[data-lang="${lang}"]`).classList.add('active');
+                });
+            });
+            
+            // Ürün ekleme modalını aç
+            const addProductBtn = document.getElementById('add-product-btn');
+            const productModal = document.getElementById('product-modal');
+            const closeModal = document.getElementById('close-modal');
+            const cancelProduct = document.getElementById('cancel-product');
+            
+            addProductBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                productModal.style.display = 'flex';
+                document.getElementById('modal-title').textContent = 'Ürün Ekle';
+                document.getElementById('product-id').value = '';
+                document.getElementById('product-form').reset();
+                document.getElementById('image-preview').innerHTML = '';
+            });
+            
+            closeModal.addEventListener('click', function() {
+                productModal.style.display = 'none';
+            });
+            
+            cancelProduct.addEventListener('click', function() {
+                productModal.style.display = 'none';
+            });
+            
+            // Ürün düzenleme modalı
+            window.editProduct = function(id) {
+                productModal.style.display = 'flex';
+                document.getElementById('modal-title').textContent = 'Ürün Düzenle';
+                document.getElementById('product-id').value = id;
+                
+                // Demo olarak ürün bilgilerini doldur
+                if (id === 1) {
+                    document.getElementById('product-name-tr').value = 'Fındıklı Türk Lokumu';
+                    document.getElementById('product-name-en').value = 'Turkish Delight with Hazelnuts';
+                    document.getElementById('product-name-ar').value = 'راحة تركية بالبندق';
+                    document.getElementById('product-description-tr').value = 'Geleneksel tatlarda fındık ile zenginleştirilmiş, ağızda dağılan enfes Türk lokumu.';
+                    document.getElementById('product-description-en').value = 'Delicious Turkish delight enriched with hazelnuts, melting in your mouth with traditional flavors.';
+                    document.getElementById('product-category').value = '1';
+                    document.getElementById('product-price').value = '120.00';
+                    document.getElementById('product-stock').value = '250';
+                    document.getElementById('product-status').value = 'active';
+                    
+                    // Demo görsel
+                    const imgPreview = document.getElementById('image-preview');
+                    imgPreview.innerHTML = `<img src="../assets/images/products/lokum1.jpg" alt="Fındıklı Lokum">`;
+                }
+            };
+            
+            // Ürün silme modalı
+            const deleteModal = document.getElementById('delete-modal');
+            const closeDeleteModal = document.getElementById('close-delete-modal');
+            const cancelDelete = document.getElementById('cancel-delete');
+            const confirmDelete = document.getElementById('confirm-delete');
+            
+            window.deleteProduct = function(id) {
+                deleteModal.style.display = 'flex';
+                
+                confirmDelete.onclick = function() {
+                    // Burada API isteği ile ürün silme işlemi yapılacak
+                    console.log(`Ürün #${id} silindi`);
+                    deleteModal.style.display = 'none';
+                    // Sayfayı yenilemek yerine tablodan satırı kaldırabilirsiniz
+                };
+            };
+            
+            closeDeleteModal.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            cancelDelete.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            // Varyasyon ekleme butonunu yönet
+            const addVariationBtn = document.getElementById('add-variation');
+            const variationsContainer = document.getElementById('weight-variations');
+            
+            addVariationBtn.addEventListener('click', function() {
+                const variationCount = variationsContainer.querySelectorAll('.variation-item').length + 1;
+                
+                const variationHTML = `
+                    <div class="variation-item">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-option-${variationCount}">Ağırlık Seçeneği</label>
+                            <select id="weight-option-${variationCount}" class="form-control weight-option">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1kg">1kg</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-price-${variationCount}">Fiyat (₺)</label>
+                            <input type="number" id="weight-price-${variationCount}" class="form-control weight-price" step="0.01" min="0">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="weight-stock-${variationCount}">Stok</label>
+                            <input type="number" id="weight-stock-${variationCount}" class="form-control weight-stock" min="0">
+                        </div>
+                        <button type="button" class="remove-variation" style="margin-top: 25px;"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                
+                variationsContainer.insertAdjacentHTML('beforeend', variationHTML);
+                
+                // Varyasyon silme işlevini ekle
+                const removeButtons = document.querySelectorAll('.remove-variation');
+                removeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        this.closest('.variation-item').remove();
+                    });
+                });
+            });
+            
+            // Varsayılan varyasyon silme işlevini ekle
+            const removeButtons = document.querySelectorAll('.remove-variation');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.variation-item').remove();
+                });
+            });
+            
+            // Ürün kaydetme işlemi
+            const productForm = document.getElementById('product-form');
+            productForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Burada API isteği ile ürün ekleme/güncelleme işlemi yapılacak
+                console.log('Ürün kaydedildi');
+                productModal.style.display = 'none';
+                
+                // Gerçek bir uygulamada, form verilerini toplayıp API'ye göndermek için:
+                // const formData = new FormData(productForm);
+                // fetch('/api/products', { method: 'POST', body: formData })
+                //    .then(response => response.json())
+                //    .then(data => console.log('Ürün kaydedildi:', data))
+                //    .catch(error => console.error('Hata:', error));
+            });
+            
+            // Ürün görseli önizleme
+            const productImagesInput = document.getElementById('product-images');
+            const imagePreview = document.getElementById('image-preview');
+            
+            productImagesInput.addEventListener('change', function() {
+                imagePreview.innerHTML = '';
+                
+                if (this.files) {
+                    Array.from(this.files).forEach(file => {
+                        if (file.type.match('image.*')) {
+                            const reader = new FileReader();
+                            
+                            reader.onload = function(e) {
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                imagePreview.appendChild(img);
+                            }
+                            
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Dil değiştirme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            loadLanguage(lang);
+        }
+        
+        // Dil yükleme fonksiyonu (i18n.js içinde tam implementasyonu olacak)
+        function loadLanguage(lang) {
+            fetch(`../locales/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const keys = key.split('.');
+                        let value = data;
+                        
+                        // Nested objeleri navigate et
+                        for (const k of keys) {
+                            if (value[k] === undefined) {
+                                value = key;
+                                break;
+                            }
+                            value = value[k];
+                        }
+                        
+                        if (typeof value === 'string') {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // Placeholder değerlerini güncelle
+                    document.getElementById('search-product').placeholder = data.admin.search_product || 'Ürün Ara...';
+                    
+                    // RTL desteği
+                    if (lang === 'ar') {
+                        document.documentElement.dir = 'rtl';
+                        document.body.classList.add('rtl');
+                    } else {
+                        document.documentElement.dir = 'ltr';
+                        document.body.classList.remove('rtl');
+                    }
+                })
+                .catch(error => console.error('Dil dosyası yüklenemedi:', error));
+        }
+    </script>
+</body>
+</html>

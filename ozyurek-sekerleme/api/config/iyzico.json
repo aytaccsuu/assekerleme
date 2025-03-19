@@ -1,0 +1,68 @@
+{
+    "development": {
+      "apiKey": "sandbox-uLdpDl7NtTYvtFsIz1J96oyhdfn33Xsd",
+      "secretKey": "sandbox-5T8pwgNCoFVaJvlodX3Qo9D6X7ftYlzf",
+      "baseUrl": "https://sandbox-api.iyzipay.com",
+      "callbackUrl": "http://localhost:3000/api/payment/callback",
+      "language": "tr",
+      "currency": "TRY",
+      "enabledInstallments": [1],
+      "enabledPaymentMethods": ["CREDIT_CARD", "CASH_ON_DELIVERY"],
+      "paymentOptions": {
+        "forceThreeDS": false,
+        "enabledCardNetworks": ["VISA", "MASTER_CARD", "AMEX"],
+        "enableBuyerProtection": true,
+        "paymentSource": "OZYUREK_WEB"
+      }
+    },
+    "test": {
+      "apiKey": "sandbox-Sx9DTYsH2eUMiLdXMoVsADRVF4YTHqvP",
+      "secretKey": "sandbox-9fDtMyCXhFaQnZe9XvZu6Z4wBpCnK2wU",
+      "baseUrl": "https://sandbox-api.iyzipay.com",
+      "callbackUrl": "http://testing.ozyureksekerleme.com/api/payment/callback",
+      "language": "tr",
+      "currency": "TRY",
+      "enabledInstallments": [1],
+      "enabledPaymentMethods": ["CREDIT_CARD", "CASH_ON_DELIVERY"],
+      "paymentOptions": {
+        "forceThreeDS": false,
+        "enabledCardNetworks": ["VISA", "MASTER_CARD", "AMEX"],
+        "enableBuyerProtection": true,
+        "paymentSource": "OZYUREK_WEB"
+      }
+    },
+    "production": {
+      "apiKey": "your-production-api-key",
+      "secretKey": "your-production-secret-key",
+      "baseUrl": "https://api.iyzipay.com",
+      "callbackUrl": "https://www.ozyureksekerleme.com/api/payment/callback",
+      "language": "tr",
+      "currency": "TRY",
+      "enabledInstallments": [1],
+      "enabledPaymentMethods": ["CREDIT_CARD", "CASH_ON_DELIVERY"],
+      "paymentOptions": {
+        "forceThreeDS": true,
+        "enabledCardNetworks": ["VISA", "MASTER_CARD", "AMEX"],
+        "enableBuyerProtection": true,
+        "paymentSource": "OZYUREK_WEB"
+      }
+    },
+    "notifyOptions": {
+      "sendEmail": true,
+      "sendSms": true,
+      "emailTemplate": "payment_confirmation",
+      "smsTemplate": "payment_confirmation_sms"
+    },
+    "errorHandling": {
+      "retryCount": 3,
+      "retryInterval": 2000,
+      "logErrors": true,
+      "notifyOnError": true,
+      "errorNotificationEmail": "tech@ozyureksekerleme.com"
+    },
+    "cashOnDeliveryConfig": {
+      "enabled": true,
+      "additionalFee": 10,
+      "maxOrderAmount": 1000
+    }
+  }
